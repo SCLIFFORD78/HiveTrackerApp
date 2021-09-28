@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HiveTrackerApp">
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.HiveTrackerActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

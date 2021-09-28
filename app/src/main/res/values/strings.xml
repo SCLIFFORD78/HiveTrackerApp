@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">HiveTrackerApp</string>
+    <string name="button_addHive">Add Hive</string>
+    <string name="hint_hiveTitle">Hive Title</string>
 </resources>
