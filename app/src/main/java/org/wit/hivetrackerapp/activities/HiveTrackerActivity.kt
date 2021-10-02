@@ -5,31 +5,33 @@ import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
 import org.wit.hivetrackerapp.R
 import org.wit.hivetrackerapp.databinding.ActivityHivetrackerBinding
+import org.wit.hivetrackerapp.main.MainApp
 import org.wit.hivetrackerapp.models.HiveModel
-import timber.log.Timber
 import timber.log.Timber.i
 
 class HiveTrackerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHivetrackerBinding
     var hive = HiveModel()
+    lateinit var app: MainApp
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityHivetrackerBinding.inflate(layoutInflater)
-        setContentView(R.layout.activity_hivetracker)
+        setContentView(binding.root)
 
-        Timber.plant(Timber.DebugTree())
-
-        i("Hive Activity started..")
-
+        app = application as MainApp
+        i("Hive Activity started...")
         binding.btnAdd.setOnClickListener() {
             hive.title = binding.hiveTitle.text.toString()
+            hive.description = binding.description.text.toString()
             if (hive.title.isNotEmpty()) {
-                i("add Button Pressed: ${hive.title}")
+                app.hives.add(hive.copy())
+                i("add Button Pressed: ${hive}")
+                for (i in app.hives.indices)
+                { i("Hive[$i]:${this.app.hives[i]}") }
             }
             else {
-                Snackbar
-                    .make(it,"Please Enter a title", Snackbar.LENGTH_LONG)
+                Snackbar.make(it,"Please Enter a title", Snackbar.LENGTH_LONG)
                     .show()
             }
         }
