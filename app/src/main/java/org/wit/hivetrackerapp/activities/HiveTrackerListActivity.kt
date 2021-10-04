@@ -1,17 +1,19 @@
 package org.wit.hivetrackerapp.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.ViewGroup
+import android.view.Menu
+import android.view.MenuItem
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import org.wit.hivetrackerapp.R
+import org.wit.hivetrackerapp.adapters.HiveTrackerAdapter
+import org.wit.hivetrackerapp.adapters.HiveTrackerListener
 import org.wit.hivetrackerapp.databinding.ActivityHiveTrackerListBinding
-import org.wit.hivetrackerapp.databinding.CardHiveBinding
 import org.wit.hivetrackerapp.main.MainApp
 import org.wit.hivetrackerapp.models.HiveModel
 
-class HiveTrackerListActivity : AppCompatActivity() {
+class HiveTrackerListActivity : AppCompatActivity() , HiveTrackerListener {
 
     lateinit var app: MainApp
     private lateinit var binding: ActivityHiveTrackerListBinding
@@ -20,38 +22,40 @@ class HiveTrackerListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityHiveTrackerListBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.toolbar.title = title
+        setSupportActionBar(binding.toolbar)
 
         app = application as MainApp
 
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
-        binding.recyclerView.adapter = HiveAdapter(app.hives)
-    }
-}
-
-class HiveAdapter constructor(private var hives: List<HiveModel>) :
-    RecyclerView.Adapter<HiveAdapter.MainHolder>() {
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
-        val binding = CardHiveBinding
-            .inflate(LayoutInflater.from(parent.context), parent, false)
-
-        return MainHolder(binding)
+        binding.recyclerView.adapter = HiveTrackerAdapter(app.hives.findAll(), this)
     }
 
-    override fun onBindViewHolder(holder: MainHolder, position: Int) {
-        val hive = hives[holder.adapterPosition]
-        holder.bind(hive)
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return super.onCreateOptionsMenu(menu)
     }
 
-    override fun getItemCount(): Int = hives.size
-
-    class MainHolder(private val binding : CardHiveBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(hive: HiveModel) {
-            binding.hiveTitle.text = hive.title
-            binding.description.text = hive.description
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.item_add -> {
+                val launcherIntent = Intent(this, HiveTrackerActivity::class.java)
+                startActivityForResult(launcherIntent,0)
+            }
         }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onHiveClick(hive: HiveModel) {
+        val launcherIntent = Intent(this, HiveTrackerActivity::class.java)
+        launcherIntent.putExtra("hive_edit", hive)
+        startActivityForResult(launcherIntent,0)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        binding.recyclerView.adapter?.notifyDataSetChanged()
+        super.onActivityResult(requestCode, resultCode, data)
     }
 }
+

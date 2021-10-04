@@ -1,3 +1,7 @@
 package org.wit.hivetrackerapp.models
 
-data class HiveModel(var title: String = "", var description: String = "")
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
+data class HiveModel(var id: Long = 0,var title: String = "", var description: String = ""):Parcelable

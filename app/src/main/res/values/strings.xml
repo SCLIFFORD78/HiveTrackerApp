@@ -3,4 +3,8 @@
     <string name="button_addHive">Add Hive</string>
     <string name="hint_hiveTitle">Hive Title</string>
     <string name="hint_hiveDescription">Description </string>
+    <string name="menu_addHive">Add</string>
+    <string name="menu_cancelHive">Cancel</string>
+    <string name="enter_hive_title">Please Enter a title</string>
+    <string name="save_hive">Save Hive</string>
 </resources>
