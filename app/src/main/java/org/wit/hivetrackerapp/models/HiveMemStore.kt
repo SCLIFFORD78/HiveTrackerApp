@@ -27,6 +27,7 @@ class HiveMemStore : HiveStore {
         if (foundHive != null) {
             foundHive.title = hive.title
             foundHive.description = hive.description
+            foundHive.image = hive.image
             logAll()
         }
     }

@@ -34,6 +34,7 @@ class HiveTrackerAdapter constructor(private var hives: List<HiveModel>,
         fun bind(hive: HiveModel, listener: HiveTrackerListener) {
             binding.hiveTitle.text = hive.title
             binding.description.text = hive.description
+            binding.hiveImage.setImageURI(hive.image)
             binding.root.setOnClickListener { listener.onHiveClick(hive) }
         }
     }
