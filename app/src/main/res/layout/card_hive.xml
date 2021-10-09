@@ -13,26 +13,33 @@
         android:layout_height="wrap_content"
         android:padding="16dp">
 
+        <ImageView
+            android:id="@+id/hiveImage"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_alignParentLeft="false"
+            app:srcCompat="@mipmap/ic_launcher" />
+
         <TextView
             android:id="@+id/hiveTitle"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
+            android:layout_toRightOf="@id/hiveImage"
+            android:paddingLeft="16dp"
             android:textSize="30sp"
             tools:text="A Title" />
 
         <TextView
             android:id="@+id/description"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/hiveTitle"
+            android:layout_toRightOf="@id/hiveImage"
+            android:paddingLeft="16dp"
             tools:text="A Description" />
 
-        <ImageView
-            android:id="@+id/hiveImage"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            app:srcCompat="@mipmap/ic_launcher" />
+
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>
