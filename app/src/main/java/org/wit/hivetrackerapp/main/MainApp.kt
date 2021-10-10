@@ -3,6 +3,7 @@ package org.wit.hivetrackerapp.main
 import android.app.Application
 import org.wit.hivetrackerapp.models.HiveMemStore
 import org.wit.hivetrackerapp.models.HiveModel
+import org.wit.hivetrackerapp.models.HiveJSONStore
 import timber.log.Timber
 import timber.log.Timber.i
 
