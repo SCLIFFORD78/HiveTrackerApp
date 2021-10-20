@@ -75,6 +75,10 @@ class HiveTrackerActivity : AppCompatActivity() {
         binding.chooseImage.setOnClickListener {
             showImagePicker(imageIntentLauncher)
         }
+
+        binding.hiveLocation.setOnClickListener {
+            i ("Set Location Pressed")
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
