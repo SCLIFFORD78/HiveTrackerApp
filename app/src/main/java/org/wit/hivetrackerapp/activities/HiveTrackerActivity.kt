@@ -22,12 +22,11 @@ class HiveTrackerActivity : AppCompatActivity() {
     lateinit var app: MainApp
 
     private lateinit var imageIntentLauncher: ActivityResultLauncher<Intent>
-
+    private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        registerImagePickerCallback()
 
         var edit = false
 
@@ -78,7 +77,13 @@ class HiveTrackerActivity : AppCompatActivity() {
 
         binding.hiveLocation.setOnClickListener {
             i ("Set Location Pressed")
+            val launcherIntent = Intent(this, MapsActivity::class.java)
+            mapIntentLauncher.launch(launcherIntent)
         }
+
+        registerImagePickerCallback()
+        registerMapCallback()
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -115,6 +120,12 @@ class HiveTrackerActivity : AppCompatActivity() {
                     }
                 }
             }
+    }
+
+    private fun registerMapCallback() {
+        mapIntentLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+            { i("Map Loaded") }
     }
 
 }
