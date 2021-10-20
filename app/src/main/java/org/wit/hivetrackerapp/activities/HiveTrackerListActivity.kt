@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.wit.hivetrackerapp.R
 import org.wit.hivetrackerapp.adapters.HiveTrackerAdapter
@@ -17,6 +19,7 @@ class HiveTrackerListActivity : AppCompatActivity() , HiveTrackerListener {
 
     lateinit var app: MainApp
     private lateinit var binding: ActivityHiveTrackerListBinding
+    private lateinit var refreshIntentLauncher : ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +33,9 @@ class HiveTrackerListActivity : AppCompatActivity() , HiveTrackerListener {
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.adapter = HiveTrackerAdapter(app.hives.findAll(), this)
+
+        registerRefreshCallback()
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -41,7 +47,7 @@ class HiveTrackerListActivity : AppCompatActivity() , HiveTrackerListener {
         when (item.itemId) {
             R.id.item_add -> {
                 val launcherIntent = Intent(this, HiveTrackerActivity::class.java)
-                startActivityForResult(launcherIntent,0)
+                refreshIntentLauncher.launch(launcherIntent)
             }
         }
         return super.onOptionsItemSelected(item)
@@ -50,12 +56,15 @@ class HiveTrackerListActivity : AppCompatActivity() , HiveTrackerListener {
     override fun onHiveClick(hive: HiveModel) {
         val launcherIntent = Intent(this, HiveTrackerActivity::class.java)
         launcherIntent.putExtra("hive_edit", hive)
-        startActivityForResult(launcherIntent,0)
+        refreshIntentLauncher.launch(launcherIntent)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        binding.recyclerView.adapter?.notifyDataSetChanged()
-        super.onActivityResult(requestCode, resultCode, data)
+
+
+    private fun registerRefreshCallback() {
+        refreshIntentLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+            { binding.recyclerView.adapter?.notifyDataSetChanged() }
     }
 }
 
