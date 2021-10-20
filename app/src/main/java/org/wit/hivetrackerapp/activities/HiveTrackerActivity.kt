@@ -14,6 +14,7 @@ import org.wit.hivetrackerapp.databinding.ActivityHivetrackerBinding
 import org.wit.hivetrackerapp.helpers.showImagePicker
 import org.wit.hivetrackerapp.main.MainApp
 import org.wit.hivetrackerapp.models.HiveModel
+import org.wit.hivetrackerapp.models.Location
 import timber.log.Timber.i
 
 class HiveTrackerActivity : AppCompatActivity() {
@@ -23,6 +24,7 @@ class HiveTrackerActivity : AppCompatActivity() {
 
     private lateinit var imageIntentLauncher: ActivityResultLauncher<Intent>
     private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
+    var location = Location(52.0634310, -9.6853542, 15f)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,6 +80,7 @@ class HiveTrackerActivity : AppCompatActivity() {
         binding.hiveLocation.setOnClickListener {
             i ("Set Location Pressed")
             val launcherIntent = Intent(this, MapsActivity::class.java)
+                .putExtra("location", location)
             mapIntentLauncher.launch(launcherIntent)
         }
 
@@ -125,7 +128,18 @@ class HiveTrackerActivity : AppCompatActivity() {
     private fun registerMapCallback() {
         mapIntentLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult())
-            { i("Map Loaded") }
+            { result ->
+                when (result.resultCode) {
+                    RESULT_OK -> {
+                        if (result.data != null) {
+                            i("Got Location ${result.data.toString()}")
+                            location = result.data!!.extras?.getParcelable("location")!!
+                            i("Location == $location")
+                        } // end of if
+                    }
+                    RESULT_CANCELED -> { } else -> { }
+                }
+            }
     }
 
 }
