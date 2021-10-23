@@ -1,70 +1,90 @@
 package org.wit.hivetrackerapp.models
 
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
+import android.content.Context
+import android.net.Uri
+import com.google.gson.*
 import com.google.gson.reflect.TypeToken
-import timber.log.Timber.i
-
 import org.wit.hivetrackerapp.helpers.*
+import timber.log.Timber
+import java.lang.reflect.Type
 import java.util.*
 
-
-val JSON_FILE = "hives.json"
-val gsonBuilder = GsonBuilder().setPrettyPrinting().create()
-val listType = object : TypeToken<java.util.ArrayList<HiveModel>>() {}.type
+const val JSON_FILE = "hives.json"
+val gsonBuilder: Gson = GsonBuilder().setPrettyPrinting()
+    .registerTypeAdapter(Uri::class.java, UriParser())
+    .create()
+val listType: Type = object : TypeToken<ArrayList<HiveModel>>() {}.type
 
 fun generateRandomId(): Long {
     return Random().nextLong()
 }
 
-class HiveJSONStore : HiveStore {
+class HiveJSONStore(private val context: Context) : HiveStore {
 
     var hives = mutableListOf<HiveModel>()
 
     init {
-        if (exists(JSON_FILE)) {
+        if (exists(context, JSON_FILE)) {
             deserialize()
         }
     }
 
     override fun findAll(): MutableList<HiveModel> {
+        logAll()
         return hives
-    }
-
-    fun findOne(id: Long) : HiveModel? {
-        var foundHive: HiveModel? = hives.find { p -> p.id == id }
-        return foundHive
     }
 
     override fun create(hive: HiveModel) {
         hive.id = generateRandomId()
         hives.add(hive)
         serialize()
-        logAll()
     }
 
+
     override fun update(hive: HiveModel) {
-        var foundHive = findOne(hive.id!!)
+        // todo
+        var foundHive: HiveModel? = hives.find { p -> p.id == hive.id }
         if (foundHive != null) {
             foundHive.title = hive.title
             foundHive.description = hive.description
             foundHive.image = hive.image
+            foundHive.lat = hive.lat
+            foundHive.lng = hive.lng
+            foundHive.zoom = hive.zoom
             logAll()
+            serialize()
         }
-        serialize()
-    }
-
-    internal fun logAll() {
-        hives.forEach { i("$it") }
     }
 
     private fun serialize() {
         val jsonString = gsonBuilder.toJson(hives, listType)
-        write(JSON_FILE, jsonString)
+        write(context, JSON_FILE, jsonString)
     }
 
     private fun deserialize() {
-        val jsonString = read(JSON_FILE)
-        hives = Gson().fromJson(jsonString, listType)
+        val jsonString = read(context, JSON_FILE)
+        hives = gsonBuilder.fromJson(jsonString, listType)
+    }
+
+    private fun logAll() {
+        hives.forEach { Timber.i("$it") }
+    }
+}
+
+class UriParser : JsonDeserializer<Uri>,JsonSerializer<Uri> {
+    override fun deserialize(
+        json: JsonElement?,
+        typeOfT: Type?,
+        context: JsonDeserializationContext?
+    ): Uri {
+        return Uri.parse(json?.asString)
+    }
+
+    override fun serialize(
+        src: Uri?,
+        typeOfSrc: Type?,
+        context: JsonSerializationContext?
+    ): JsonElement {
+        return JsonPrimitive(src.toString())
     }
 }

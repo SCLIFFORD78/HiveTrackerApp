@@ -32,10 +32,9 @@ class HiveTrackerListActivity : AppCompatActivity() , HiveTrackerListener {
 
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
-        binding.recyclerView.adapter = HiveTrackerAdapter(app.hives.findAll(), this)
+        loadHives()
 
         registerRefreshCallback()
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -64,7 +63,16 @@ class HiveTrackerListActivity : AppCompatActivity() , HiveTrackerListener {
     private fun registerRefreshCallback() {
         refreshIntentLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult())
-            { binding.recyclerView.adapter?.notifyDataSetChanged() }
+            { loadHives() }
+    }
+
+    private fun loadHives() {
+        showHives(app.hives.findAll())
+    }
+
+    fun showHives (hives: List<HiveModel>) {
+        binding.recyclerView.adapter = HiveTrackerAdapter(hives, this)
+        binding.recyclerView.adapter?.notifyDataSetChanged()
     }
 }
 

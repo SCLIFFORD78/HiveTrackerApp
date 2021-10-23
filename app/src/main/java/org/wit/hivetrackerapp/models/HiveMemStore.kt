@@ -28,6 +28,9 @@ class HiveMemStore : HiveStore {
             foundHive.title = hive.title
             foundHive.description = hive.description
             foundHive.image = hive.image
+            foundHive.lat = hive.lat
+            foundHive.lng = hive.lng
+            foundHive.zoom = hive.zoom
             logAll()
         }
     }
