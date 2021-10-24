@@ -1,10 +1,11 @@
-package org.wit.hivetrackerapp
+package org.wit.hivetrackerapp.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import org.wit.hivetrackerapp.R
 import org.wit.hivetrackerapp.databinding.FragmentAddBinding
 import org.wit.hivetrackerapp.main.MainApp
 
