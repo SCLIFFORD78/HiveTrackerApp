@@ -12,6 +12,10 @@
             android:id="@+id/listFragment"
             android:icon="@drawable/ic_menu_list"
             android:title="@string/action_list" />
+        <item
+            android:id="@+id/aboutusFragment"
+            android:icon="@drawable/ic_menu_aboutus"
+            android:title="@string/action_about" />
     </group>
 
     <item android:title="@string/group_communicate">

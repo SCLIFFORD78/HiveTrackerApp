@@ -29,7 +29,7 @@ class Home : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
         appBarConfiguration = AppBarConfiguration(setOf(
-            R.id.addFragment, R.id.listFragment), drawerLayout)
+            R.id.addFragment, R.id.listFragment, R.id.aboutusFragment), drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
     }
 
