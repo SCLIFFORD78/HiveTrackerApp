@@ -71,7 +71,7 @@ class HiveTrackerListActivity : AppCompatActivity() , HiveTrackerListener {
     }
 
     fun showHives (hives: List<HiveModel>) {
-        binding.recyclerView.adapter = HiveTrackerAdapter(hives, this)
+        binding.recyclerView.adapter = HiveTrackerAdapter(hives)
         binding.recyclerView.adapter?.notifyDataSetChanged()
     }
 }

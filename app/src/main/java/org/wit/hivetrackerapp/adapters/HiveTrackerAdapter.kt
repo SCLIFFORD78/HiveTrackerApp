@@ -10,8 +10,7 @@ interface HiveTrackerListener {
     fun onHiveClick(hive: HiveModel)
 }
 
-class HiveTrackerAdapter constructor(private var hives: List<HiveModel>,
-                                     private val listener: HiveTrackerListener) :
+class HiveTrackerAdapter(private var hives: List<HiveModel>) :
     RecyclerView.Adapter<HiveTrackerAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
@@ -23,7 +22,7 @@ class HiveTrackerAdapter constructor(private var hives: List<HiveModel>,
 
     override fun onBindViewHolder(holder: MainHolder, position: Int) {
         val hive = hives[holder.adapterPosition]
-        holder.bind(hive, listener)
+        holder.bind(hive)
     }
 
     override fun getItemCount(): Int = hives.size
@@ -31,11 +30,10 @@ class HiveTrackerAdapter constructor(private var hives: List<HiveModel>,
     class MainHolder(private val binding : CardHiveBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(hive: HiveModel, listener: HiveTrackerListener) {
+        fun bind(hive: HiveModel) {
             binding.hiveTitle.text = hive.title
             binding.description.text = hive.description
             binding.hiveImage.setImageURI(hive.image)
-            binding.root.setOnClickListener { listener.onHiveClick(hive) }
         }
     }
 }

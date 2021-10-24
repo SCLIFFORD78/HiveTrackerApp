@@ -15,7 +15,8 @@ class MainApp : Application() {
     override fun onCreate() {
         super.onCreate()
         Timber.plant(Timber.DebugTree())
-        hives = HiveJSONStore(applicationContext)
+        //hives = HiveJSONStore(applicationContext)
+        hives = HiveMemStore()
         i("HiveTracker started")
         //hives.add(HiveModel("One", "About one..."))
         //hives.add(HiveModel("Two", "About two..."))
