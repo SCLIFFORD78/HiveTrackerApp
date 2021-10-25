@@ -2,6 +2,7 @@ package org.wit.hivetrackerapp.fragments
 
 import android.app.Activity.RESULT_CANCELED
 import android.app.appsearch.AppSearchResult.RESULT_OK
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -21,7 +22,11 @@ import org.wit.hivetrackerapp.helpers.showImagePicker
 import android.content.Intent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import com.squareup.picasso.Picasso
+import org.wit.hivetrackerapp.activities.MapsActivity
+import org.wit.hivetrackerapp.databinding.ActivityMapsBinding
+import org.wit.hivetrackerapp.models.Location
 
 
 class AddFragment : Fragment() {
@@ -31,8 +36,8 @@ class AddFragment : Fragment() {
     val hive = HiveModel()
     var edit = false
     private lateinit var imageIntentLauncher: ActivityResultLauncher<Intent>
-
-
+    private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
+    var location = Location()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,6 +59,8 @@ class AddFragment : Fragment() {
         setAddButtonListener(fragBinding)
         setChooseImageListener(fragBinding)
         registerImagePickerCallback(fragBinding)
+        setChooseMapListener(fragBinding)
+        registerMapCallback(fragBinding)
         return root;
     }
 
@@ -96,6 +103,21 @@ class AddFragment : Fragment() {
         }
     }
 
+    fun setChooseMapListener(layout: FragmentAddBinding){
+        layout.hiveLocation.setOnClickListener{
+            i ("Set Location Pressed")
+            var location = Location(52.0634310, -9.6853542, 15f)
+            if (hive.zoom != 0f) {
+                location.lat =  hive.lat
+                location.lng = hive.lng
+                location.zoom = hive.zoom
+            }
+            val launcherIntent = Intent(activity,MapsActivity::class.java)
+                .putExtra("location", location)
+            mapIntentLauncher.launch(launcherIntent)
+        }
+    }
+
     private fun registerImagePickerCallback(layout: FragmentAddBinding) {
         imageIntentLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult())
@@ -115,6 +137,27 @@ class AddFragment : Fragment() {
                     else -> {
                         i("Image selection cancelled")
                     }
+                }
+            }
+    }
+
+    private fun registerMapCallback(layout: FragmentAddBinding) {
+        mapIntentLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+            { result ->
+                i("Map data ${result.data.toString()}")
+                when (result.resultCode) {
+                    AppCompatActivity.RESULT_OK -> {
+                        if (result.data != null) {
+                            i("Got Location ${result.data.toString()}")
+                            location = result.data!!.extras?.getParcelable("location")!!
+                            hive.lat = location.lat
+                            hive.lng = location.lng
+                            hive.zoom = location.zoom
+                            i("Location == $location")
+                        } // end of if
+                    }
+                    RESULT_CANCELED -> { } else -> { }
                 }
             }
     }
