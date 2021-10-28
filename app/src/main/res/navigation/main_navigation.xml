@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_navigation"
-    app:startDestination="@id/loginFragment2">
+    app:startDestination="@id/loginOrRegisterFragment">
 
     <fragment
         android:id="@+id/listFragment"
@@ -44,7 +44,7 @@
         tools:layout="@layout/fragment_login" />
     <fragment
         android:id="@+id/loginOrRegisterFragment"
-        android:name="org.wit.hivetrackerapp.fragments.LoginOrRegisterFragment"
+        android:name="org.wit.hivetrackerapp.ui.login.LoginOrRegisterFragment"
         android:label="fragment_login_or_register"
         tools:layout="@layout/fragment_login_or_register" />
     <fragment

@@ -44,7 +44,11 @@ class Home : AppCompatActivity(), HiveTrackerAdapter.Communicator {
 
 
         appBarConfiguration = AppBarConfiguration(setOf(
-            R.id.addFragment, R.id.listFragment, R.id.aboutusFragment, R.id.updateFragment), drawerLayout)
+            R.id.addFragment,
+            R.id.listFragment,
+            R.id.aboutusFragment,
+            R.id.updateFragment,
+            R.id.loginOrRegisterFragment), drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
     }
 
@@ -63,10 +67,6 @@ class Home : AppCompatActivity(), HiveTrackerAdapter.Communicator {
         mFragment.data = hive
         Timber.i("testing data sent to home page : $mBundle")
         mFragmentManager.beginTransaction().replace(R.id.update,mFragment).addToBackStack(null).commit()
-        //mFragmentManager.beginTransaction().replace(R.id.update,mFragment,mBundle,"data").commit()
-        //mFragmentManager.beginTransaction().detach(mFragment)
-        //mFragmentTransaction.remove(mFragment)
-        //mFragmentTransaction.add(R.id.appBarLayout, mFragment).commit()
 
     }
 

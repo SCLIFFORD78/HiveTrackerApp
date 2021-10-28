@@ -41,7 +41,7 @@ class RegisterFragment : Fragment() {
 
         _fragBinding = FragmentRegisterBinding.inflate(inflater, container, false)
         val root = fragBinding.root
-        activity?.title = getString(R.string.action_add)
+        activity?.title = getString(R.string.fragment_header_register)
         setRegisterButtonListener(fragBinding)
         return root
     }

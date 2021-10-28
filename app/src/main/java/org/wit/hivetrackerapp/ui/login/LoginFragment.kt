@@ -30,7 +30,6 @@ import org.wit.hivetrackerapp.models.UserModel
 import timber.log.Timber
 private var user= UserModel()
 class LoginFragment : Fragment() {
-    private val _loginForm = MutableLiveData<LoginFormState<Any?>>()
     lateinit var app: MainApp
     private var _fragBinding: FragmentLoginBinding? = null
     private val fragBinding get() = _fragBinding!!
@@ -50,7 +49,7 @@ class LoginFragment : Fragment() {
 
         _fragBinding = FragmentLoginBinding.inflate(inflater, container, false)
         val root = fragBinding.root
-        activity?.title = getString(R.string.action_add)
+        activity?.title = getString(R.string.fragment_header_login)
         setLoginButtonListener(fragBinding)
         return root
     }
@@ -99,13 +98,19 @@ class LoginFragment : Fragment() {
 
                 var registeredUser = app.users.find(user)
                 if (registeredUser != null) {
-                    if (registeredUser.userName.equals(user.userName)){
+                    if (!registeredUser.userName.equals(user.userName)){
+                        showLoginFailed(R.string.invalid_username)
+
+                    }else if(!registeredUser.password.equals(user.password)){
+                        showLoginFailed(R.string.invalid_password_login)
+                    }
+                    else{
                         updateUiWithUser(user.userName)
                         app.loggedInUser = user
                         Navigation.findNavController(this.requireView()).navigate(R.id.listFragment)
                     }
                 }else{
-                    showLoginFailed(R.string.login_failed)
+                    showLoginFailed(R.string.invalid_username)
                 }
             }
 
