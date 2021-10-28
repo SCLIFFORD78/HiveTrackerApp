@@ -1,31 +1,18 @@
 package org.wit.hivetrackerapp.fragments
 
-import android.app.Activity
 import android.content.Intent
-import android.os.Binder
 import android.os.Bundle
 import android.view.*
-import android.widget.Adapter
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.wit.hivetrackerapp.R
-import org.wit.hivetrackerapp.activities.Home
 import org.wit.hivetrackerapp.adapters.HiveTrackerAdapter
-import org.wit.hivetrackerapp.data.model.LoggedInUser
-import org.wit.hivetrackerapp.databinding.FragmentAddBinding
 import org.wit.hivetrackerapp.databinding.FragmentListBinding
-import org.wit.hivetrackerapp.databinding.HomeBinding
 import org.wit.hivetrackerapp.main.MainApp
-import org.wit.hivetrackerapp.models.HiveModel
-import org.wit.hivetrackerapp.ui.login.LoggedInUserView
 import timber.log.Timber
 
 class ListFragment : Fragment(), HiveTrackerAdapter.OnHiveClickListener {

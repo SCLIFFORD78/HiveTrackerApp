@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,19 +16,31 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
+import com.google.android.material.snackbar.Snackbar
 import org.wit.hivetrackerapp.databinding.FragmentLoginBinding
 
 import org.wit.hivetrackerapp.R
-
+import org.wit.hivetrackerapp.databinding.FragmentAddBinding
+import org.wit.hivetrackerapp.fragments.hive
+import org.wit.hivetrackerapp.main.MainApp
+import org.wit.hivetrackerapp.models.HiveModel
+import org.wit.hivetrackerapp.models.UserModel
+import timber.log.Timber
+private var user= UserModel()
 class LoginFragment : Fragment() {
+    private val _loginForm = MutableLiveData<LoginFormState<Any?>>()
+    lateinit var app: MainApp
+    private var _fragBinding: FragmentLoginBinding? = null
+    private val fragBinding get() = _fragBinding!!
 
-    private lateinit var loginViewModel: LoginViewModel
-    private var _binding: FragmentLoginBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        app = activity?.application as MainApp
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,86 +48,17 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        _binding = FragmentLoginBinding.inflate(inflater, container, false)
-        return binding.root
-
+        _fragBinding = FragmentLoginBinding.inflate(inflater, container, false)
+        val root = fragBinding.root
+        activity?.title = getString(R.string.action_add)
+        setLoginButtonListener(fragBinding)
+        return root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
-            .get(LoginViewModel::class.java)
 
-        val usernameEditText = binding.username
-        val passwordEditText = binding.password
-        val loginButton = binding.login
-        val loadingProgressBar = binding.loading
 
-        loginViewModel.loginFormState.observe(viewLifecycleOwner,
-            Observer { loginFormState ->
-                if (loginFormState == null) {
-                    return@Observer
-                }
-                loginButton.isEnabled = loginFormState.isDataValid
-                loginFormState.usernameError?.let {
-                    usernameEditText.error = getString(it)
-                }
-                loginFormState.passwordError?.let {
-                    passwordEditText.error = getString(it)
-                }
-            })
-
-        loginViewModel.loginResult.observe(viewLifecycleOwner,
-            Observer { loginResult ->
-                loginResult ?: return@Observer
-                loadingProgressBar.visibility = View.GONE
-                loginResult.error?.let {
-                    showLoginFailed(it)
-                }
-                loginResult.success?.let {
-                    updateUiWithUser(it)
-                }
-            })
-
-        val afterTextChangedListener = object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-                // ignore
-            }
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                // ignore
-            }
-
-            override fun afterTextChanged(s: Editable) {
-                loginViewModel.loginDataChanged(
-                    usernameEditText.text.toString(),
-                    passwordEditText.text.toString()
-                )
-            }
-        }
-        usernameEditText.addTextChangedListener(afterTextChangedListener)
-        passwordEditText.addTextChangedListener(afterTextChangedListener)
-        passwordEditText.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                loginViewModel.login(
-                    usernameEditText.text.toString(),
-                    passwordEditText.text.toString()
-                )
-            }
-            false
-        }
-
-        loginButton.setOnClickListener {
-            loadingProgressBar.visibility = View.VISIBLE
-            loginViewModel.login(
-                usernameEditText.text.toString(),
-                passwordEditText.text.toString()
-            )
-        }
-    }
-
-    private fun updateUiWithUser(model: LoggedInUserView) {
-        val welcome = getString(R.string.welcome) + model.displayName
+    private fun updateUiWithUser(username: String) {
+        val welcome = getString(R.string.welcome) + username
         // TODO : initiate successful logged in experience
         Navigation.findNavController(this.requireView()).navigate(R.id.listFragment)
 
@@ -127,8 +71,49 @@ class LoginFragment : Fragment() {
         Toast.makeText(appContext, errorString, Toast.LENGTH_LONG).show()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    // A placeholder username validation check
+    private fun isUserNameValid(username: String): Boolean {
+        return username.length > 5
+        //return if (username.contains("@")) {
+            //Patterns.EMAIL_ADDRESS.matcher(username).matches()
+        //} else {
+           // username.isNotBlank()
+        //}
     }
+
+    // A placeholder password validation check
+    private fun isPasswordValid(password: String): Boolean {
+        return password.length > 5
+    }
+
+    fun setLoginButtonListener(layout: FragmentLoginBinding) {
+        layout.login.setOnClickListener {
+            var test = user
+            user.userName = layout.username.text.toString()
+            user.password = layout.password.text.toString()
+            if (!isUserNameValid(user.userName)) {
+                showLoginFailed(R.string.invalid_username)
+            } else if (!isPasswordValid(user.password)) {
+                showLoginFailed(R.string.invalid_password)
+            } else {
+
+                var registeredUser = app.users.find(user)
+                if (registeredUser != null) {
+                    if (registeredUser.userName.equals(user.userName)){
+                        updateUiWithUser(user.userName)
+                        app.loggedInUser = user
+                        Navigation.findNavController(this.requireView()).navigate(R.id.listFragment)
+                    }
+                }else{
+                    showLoginFailed(R.string.login_failed)
+                }
+            }
+
+            Timber.i("add Button Pressed: $user")
+            //setResult(RESULT_OK)
+
+        }
+    }
+
+
 }
