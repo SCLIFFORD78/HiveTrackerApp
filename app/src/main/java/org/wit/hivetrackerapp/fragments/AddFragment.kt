@@ -112,6 +112,7 @@ class AddFragment : Fragment() {
                 if (edit) {
                     app.hives.update(hive.copy())
                 } else {
+                    hive.userID = app.loggedInUser.id
                     app.hives.create(hive.copy())
                 }
             }
