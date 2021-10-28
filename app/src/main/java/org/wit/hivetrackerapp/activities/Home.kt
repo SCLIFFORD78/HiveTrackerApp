@@ -1,18 +1,30 @@
 package org.wit.hivetrackerapp.activities
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.FragmentTransaction
+import androidx.fragment.app.add
 import androidx.navigation.findNavController
 import androidx.navigation.ui.*
 import org.wit.hivetrackerapp.R
+import org.wit.hivetrackerapp.adapters.HiveTrackerAdapter
 import org.wit.hivetrackerapp.databinding.HomeBinding
+import org.wit.hivetrackerapp.fragments.AddFragment
+import org.wit.hivetrackerapp.fragments.ListFragment
+import org.wit.hivetrackerapp.fragments.UpdateFragment
+import org.wit.hivetrackerapp.models.HiveModel
+import timber.log.Timber
 
-class Home : AppCompatActivity() {
+class Home : AppCompatActivity(), HiveTrackerAdapter.Communicator {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var homeBinding : HomeBinding
     private lateinit var appBarConfiguration: AppBarConfiguration
+    val mFragmentManager = supportFragmentManager
+    val mFragmentTransaction = mFragmentManager.beginTransaction()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,8 +40,11 @@ class Home : AppCompatActivity() {
         val navView = homeBinding.navView
         navView.setupWithNavController(navController)
 
+
+
+
         appBarConfiguration = AppBarConfiguration(setOf(
-            R.id.addFragment, R.id.listFragment, R.id.aboutusFragment), drawerLayout)
+            R.id.addFragment, R.id.listFragment, R.id.aboutusFragment, R.id.updateFragment), drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
     }
 
@@ -37,6 +52,24 @@ class Home : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
+
+    @SuppressLint("WrongConstant")
+    override fun passDataCom(hive: HiveModel) {
+        val mFragment = UpdateFragment()
+        Timber.i("testing data sent to home page : $hive")
+        val mBundle = Bundle()
+        mBundle.putParcelable("data",hive)
+        mFragment.arguments=mBundle
+        mFragment.data = hive
+        Timber.i("testing data sent to home page : $mBundle")
+        mFragmentManager.beginTransaction().replace(R.id.update,mFragment).addToBackStack(null).commit()
+        //mFragmentManager.beginTransaction().replace(R.id.update,mFragment,mBundle,"data").commit()
+        //mFragmentManager.beginTransaction().detach(mFragment)
+        //mFragmentTransaction.remove(mFragment)
+        //mFragmentTransaction.add(R.id.appBarLayout, mFragment).commit()
+
+    }
+
 
 
 }

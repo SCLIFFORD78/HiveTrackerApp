@@ -5,7 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.wit.hivetrackerapp.activities.HiveTrackerListActivity">
+    android:id="@+id/content_id"
+    tools:context="org.wit.hivetrackerapp.fragments.ListFragment"
+    tools:ignore="InvalidId">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"

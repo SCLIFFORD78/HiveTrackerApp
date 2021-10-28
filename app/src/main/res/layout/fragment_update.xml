@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="org.wit.hivetrackerapp.fragments.AddFragment">
@@ -10,6 +11,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/update"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="InvalidId">
@@ -52,8 +54,7 @@
                     android:maxLines="1"
                     android:padding="8dp"
                     android:textColor="@color/colorPrimaryDark"
-                    android:textSize="14sp"
-                    />
+                    android:textSize="14sp" />
 
                 <EditText
                     android:id="@+id/description"
@@ -66,20 +67,20 @@
                     android:maxLines="1"
                     android:padding="8dp"
                     android:textColor="@color/colorPrimaryDark"
-                    android:textSize="14sp"
-                    />
+                    android:textSize="14sp" />
+
                 <Button
                     android:id="@+id/hiveLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     android:background="@color/colorAccent"
-                    android:paddingBottom="8dp"
                     android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
                     android:stateListAnimator="@null"
                     android:text="@string/button_location"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp" />
 
                 <Button
                     android:id="@+id/chooseImage"
@@ -89,7 +90,7 @@
                     android:background="@android:color/holo_orange_dark"
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
-                    android:text="@string/button_addImage"
+                    android:text="@string/button_changeImage"
                     android:textColor="@color/colorPrimary"
                     android:textSize="16sp" />
 
@@ -97,7 +98,7 @@
                     android:id="@+id/hiveImage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:srcCompat="@mipmap/ic_launcher"/>
+                    app:srcCompat="@mipmap/ic_launcher" />
 
                 <Button
                     android:id="@+id/btnAdd"
@@ -108,7 +109,7 @@
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
                     android:stateListAnimator="@null"
-                    android:text="@string/button_addHive"
+                    android:text="@string/save_hive"
                     android:textColor="#212121"
                     android:textSize="16sp" />
             </LinearLayout>

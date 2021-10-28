@@ -1,41 +1,41 @@
 package org.wit.hivetrackerapp.fragments
 
-import android.app.Activity.RESULT_CANCELED
-import android.app.appsearch.AppSearchResult.RESULT_OK
-import android.content.Context
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.NavigationUI
-import com.google.android.material.snackbar.Snackbar
-import org.wit.hivetrackerapp.R
-import org.wit.hivetrackerapp.databinding.FragmentAddBinding
-import org.wit.hivetrackerapp.main.MainApp
-import org.wit.hivetrackerapp.models.HiveModel
-import timber.log.Timber.i
-import org.wit.hivetrackerapp.helpers.showImagePicker
-import android.content.Intent
-import android.os.Parcelable
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.Navigation
+import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
-import kotlinx.parcelize.Parcelize
+import org.wit.hivetrackerapp.R
 import org.wit.hivetrackerapp.activities.MapsActivity
-import org.wit.hivetrackerapp.databinding.ActivityMapsBinding
-import org.wit.hivetrackerapp.databinding.HomeBinding
+import org.wit.hivetrackerapp.databinding.FragmentAddBinding
+import org.wit.hivetrackerapp.databinding.FragmentUpdateBinding
+import org.wit.hivetrackerapp.helpers.showImagePicker
+import org.wit.hivetrackerapp.main.MainApp
+import org.wit.hivetrackerapp.models.HiveModel
 import org.wit.hivetrackerapp.models.Location
+import timber.log.Timber
 
-var hive = HiveModel()
+// TODO: Rename parameter arguments, choose names that match
+// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+private const val ARG_PARAM1 = "param1"
+private const val ARG_PARAM2 = "param2"
 
-class AddFragment : Fragment() {
+/**
+ * A simple [Fragment] subclass.
+ * Use the [UpdateFragment.newInstance] factory method to
+ * create an instance of this fragment.
+ */
+class UpdateFragment : Fragment() {
     lateinit var app: MainApp
-    private var _fragBinding: FragmentAddBinding? = null
+    private var _fragBinding: FragmentUpdateBinding? = null
     private val fragBinding get() = _fragBinding!!
     var edit = false
     private lateinit var imageIntentLauncher: ActivityResultLauncher<Intent>
@@ -49,8 +49,6 @@ class AddFragment : Fragment() {
         app = activity?.application as MainApp
         data = HiveModel()
         setHasOptionsMenu(true)
-
-
     }
 
     override fun onCreateView(
@@ -60,7 +58,7 @@ class AddFragment : Fragment() {
         if (container != null) {
             container.removeAllViews();
         }
-        _fragBinding = FragmentAddBinding.inflate(inflater, container, false)
+        _fragBinding = FragmentUpdateBinding.inflate(inflater, container, false)
         val root = fragBinding.root
         activity?.title = getString(R.string.action_add)
 
@@ -101,7 +99,7 @@ class AddFragment : Fragment() {
         _fragBinding = null
     }
 
-    fun setAddButtonListener(layout: FragmentAddBinding) {
+    fun setAddButtonListener(layout: FragmentUpdateBinding) {
         layout.btnAdd.setOnClickListener {
             hive.title = layout.hiveTitle.text.toString()
             hive.description = layout.description.text.toString()
@@ -115,41 +113,41 @@ class AddFragment : Fragment() {
                     app.hives.create(hive.copy())
                 }
             }
-            i("add Button Pressed: $hive")
+            Timber.i("add Button Pressed: $hive")
             //setResult(RESULT_OK)
             Navigation.findNavController(this.requireView()).navigate(R.id.listFragment)
         }
     }
 
-    fun setChooseImageListener(layout: FragmentAddBinding){
+    fun setChooseImageListener(layout: FragmentUpdateBinding){
         layout.chooseImage.setOnClickListener{
             showImagePicker(imageIntentLauncher)
         }
     }
 
-    fun setChooseMapListener(layout: FragmentAddBinding){
+    fun setChooseMapListener(layout: FragmentUpdateBinding){
         layout.hiveLocation.setOnClickListener{
-            i ("Set Location Pressed")
+            Timber.i("Set Location Pressed")
             var location = Location(52.0634310, -9.6853542, 15f)
             if (hive.zoom != 0f) {
                 location.lat =  hive.lat
                 location.lng = hive.lng
                 location.zoom = hive.zoom
             }
-            val launcherIntent = Intent(activity,MapsActivity::class.java)
+            val launcherIntent = Intent(activity, MapsActivity::class.java)
                 .putExtra("location", location)
             mapIntentLauncher.launch(launcherIntent)
         }
     }
 
-    private fun registerImagePickerCallback(layout: FragmentAddBinding) {
+    private fun registerImagePickerCallback(layout: FragmentUpdateBinding) {
         imageIntentLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult())
             { result ->
                 when (result.resultCode) {
                     -1 -> {
                         if (result.data != null) {
-                            i("Got Result ${result.data!!.data}")
+                            Timber.i("Got Result ${result.data!!.data}")
                             hive.image = result.data!!.data!!
                             Picasso.get()
                                 .load(hive.image)
@@ -159,29 +157,29 @@ class AddFragment : Fragment() {
                     0 -> {
                     }
                     else -> {
-                        i("Image selection cancelled")
+                        Timber.i("Image selection cancelled")
                     }
                 }
             }
     }
 
-    private fun registerMapCallback(layout: FragmentAddBinding) {
+    private fun registerMapCallback(layout: FragmentUpdateBinding) {
         mapIntentLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult())
             { result ->
-                i("Map data ${result.data.toString()}")
+                Timber.i("Map data ${result.data.toString()}")
                 when (result.resultCode) {
                     AppCompatActivity.RESULT_OK -> {
                         if (result.data != null) {
-                            i("Got Location ${result.data.toString()}")
+                            Timber.i("Got Location ${result.data.toString()}")
                             location = result.data!!.extras?.getParcelable("location")!!
                             hive.lat = location.lat
                             hive.lng = location.lng
                             hive.zoom = location.zoom
-                            i("Location == $location")
+                            Timber.i("Location == $location")
                         } // end of if
                     }
-                    RESULT_CANCELED -> { } else -> { }
+                    Activity.RESULT_CANCELED -> { } else -> { }
                 }
             }
     }

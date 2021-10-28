@@ -32,4 +32,9 @@
         android:name="org.wit.hivetrackerapp.fragments.AboutusFragment"
         android:label="fragment_aboutus"
         tools:layout="@layout/fragment_aboutus" />
+    <fragment
+        android:id="@+id/updateFragment"
+        android:name="org.wit.hivetrackerapp.fragments.UpdateFragment"
+        android:label="fragment_update"
+        tools:layout="@layout/fragment_update" />
 </navigation>
