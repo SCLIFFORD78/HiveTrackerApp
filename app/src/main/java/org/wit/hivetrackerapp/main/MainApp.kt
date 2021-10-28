@@ -10,13 +10,14 @@ class MainApp : Application() {
 
     lateinit var hives: HiveStore
     lateinit var users: UserStore
-    var loggedInUser =  UserModel()
+    lateinit var loggedInUser: UserModel
 
     override fun onCreate() {
         super.onCreate()
         Timber.plant(Timber.DebugTree())
         hives = HiveJSONStore(applicationContext)
         users = UserJSONStore(applicationContext)
+        loggedInUser = UserModel()
         //hives = HiveMemStore()
         i("HiveTracker started")
         //hives.add(HiveModel("One", "About one..."))

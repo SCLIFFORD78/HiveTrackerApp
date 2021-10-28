@@ -106,7 +106,7 @@ class LoginFragment : Fragment() {
                     }
                     else{
                         updateUiWithUser(user.userName)
-                        app.loggedInUser = user
+                        app.loggedInUser = registeredUser
                         Navigation.findNavController(this.requireView()).navigate(R.id.listFragment)
                     }
                 }else{
