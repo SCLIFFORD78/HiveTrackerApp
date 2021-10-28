@@ -7,8 +7,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.Navigation
 import com.google.android.material.snackbar.Snackbar
@@ -79,6 +81,7 @@ class UpdateFragment : Fragment() {
                 .into(fragBinding.hiveImage)
         }
         setAddButtonListener(fragBinding)
+        setDeleteButtonListener(fragBinding)
         setChooseImageListener(fragBinding)
         registerImagePickerCallback(fragBinding)
         setChooseMapListener(fragBinding)
@@ -115,6 +118,15 @@ class UpdateFragment : Fragment() {
             }
             Timber.i("add Button Pressed: $hive")
             //setResult(RESULT_OK)
+            Navigation.findNavController(this.requireView()).navigate(R.id.listFragment)
+        }
+    }
+
+    fun setDeleteButtonListener(layout: FragmentUpdateBinding) {
+        layout.btnDelete.setOnClickListener {
+            app.hives.delete(hive)
+            Timber.i("Delete Button Pressed: ${hive.id} Deleted")
+            toastMessage("Hive Deleted!")
             Navigation.findNavController(this.requireView()).navigate(R.id.listFragment)
         }
     }
@@ -182,5 +194,10 @@ class UpdateFragment : Fragment() {
                     Activity.RESULT_CANCELED -> { } else -> { }
                 }
             }
+    }
+
+    private fun toastMessage( errorString: String) {
+        val appContext = context?.applicationContext ?: return
+        Toast.makeText(appContext, errorString, Toast.LENGTH_LONG).show()
     }
 }

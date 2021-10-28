@@ -2,6 +2,8 @@ package org.wit.hivetrackerapp.models
 
 interface HiveStore {
     fun findAll(): List<HiveModel>
-    fun create(placemark: HiveModel)
+    fun create(hive: HiveModel)
     fun update(hive: HiveModel)
+    fun delete(hive: HiveModel)
+    fun find(hive: HiveModel) :HiveModel?
 }

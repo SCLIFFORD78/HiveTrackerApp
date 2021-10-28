@@ -42,7 +42,6 @@ class HiveJSONStore(private val context: Context) : HiveStore {
 
 
     override fun update(hive: HiveModel) {
-        // todo
         var foundHive: HiveModel? = hives.find { p -> p.id == hive.id }
         if (foundHive != null) {
             foundHive.title = hive.title
@@ -54,6 +53,18 @@ class HiveJSONStore(private val context: Context) : HiveStore {
             logAll()
             serialize()
         }
+    }
+
+    override fun delete(hive: HiveModel) {
+        hives.remove(hive)
+        serialize()
+    }
+
+    override fun find(hive: HiveModel): HiveModel? {
+        var foundHive: HiveModel? = hives.find { p -> p.id == hive.id }
+        return if (foundHive != null) {
+            foundHive
+        }else null
     }
 
     private fun serialize() {

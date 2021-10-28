@@ -35,6 +35,14 @@ class HiveMemStore : HiveStore {
         }
     }
 
+    override fun delete(hive: HiveModel) {
+        TODO("Not yet implemented")
+    }
+
+    override fun find(hive: HiveModel): HiveModel? {
+        TODO("Not yet implemented")
+    }
+
     private fun logAll() {
         hives.forEach { i("$it") }
     }
