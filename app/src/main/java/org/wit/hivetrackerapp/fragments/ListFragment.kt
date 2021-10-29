@@ -1,5 +1,6 @@
 package org.wit.hivetrackerapp.fragments
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
@@ -18,6 +19,7 @@ import org.wit.hivetrackerapp.databinding.FragmentAddBinding
 import org.wit.hivetrackerapp.databinding.FragmentListBinding
 import org.wit.hivetrackerapp.main.MainApp
 import org.wit.hivetrackerapp.models.HiveModel
+import org.wit.hivetrackerapp.models.UserModel
 import timber.log.Timber
 
 
@@ -34,6 +36,7 @@ class ListFragment : Fragment(), HiveTrackerAdapter.OnHiveClickListener {
     private lateinit var comm: HiveTrackerAdapter.Communicator
     lateinit var spinner: Spinner
     lateinit var spinner2: Spinner
+    private lateinit var users : List<UserModel>
 
 
 
@@ -41,11 +44,7 @@ class ListFragment : Fragment(), HiveTrackerAdapter.OnHiveClickListener {
         super.onCreate(savedInstanceState)
         app = activity?.application as MainApp
         setHasOptionsMenu(true)
-        var users = app.users.findAll()
-        var names: MutableList<String> = arrayListOf()
-        for (user in users){
-            names.add(0,(user.firstName+" "+user.secondName))
-        }
+
 
     }
 
@@ -61,13 +60,32 @@ class ListFragment : Fragment(), HiveTrackerAdapter.OnHiveClickListener {
         fragBinding.recyclerView.setLayoutManager(LinearLayoutManager(activity))
         fragBinding.recyclerView.adapter = HiveTrackerAdapter(app.hives.findAll(),this)
 
-        val users = app.users.findAll()
+        users = app.users.findAll()
         val names: MutableList<String> = arrayListOf()
         for (user in users){
             names.add(0,(user.firstName+" "+user.secondName))
         }
+        names.add(0,"All Users")
 
         spinner = root.findViewById(R.id.hiveTypeSpinnerSearch)
+        ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.hiveTypeSearch, android.R.layout.simple_spinner_item,
+        ).also { adapter ->
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            // Apply the adapter to the spinner
+            adapter.also { spinner.adapter = it }
+        }
+        spinner2 = root.findViewById(R.id.hiveOwnerSpinnerSearch)
+        // Creating adapter for spinner
+        val dataAdapter: ArrayAdapter<String>? =
+            activity?.let { ArrayAdapter<String>(it.applicationContext, android.R.layout.simple_spinner_item, names) }
+        dataAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        // attaching data adapter to spinner
+        spinner2.adapter = dataAdapter
+
+
         ArrayAdapter.createFromResource(
             requireContext(),
             R.array.hiveTypeSearch, android.R.layout.simple_spinner_item,
@@ -124,7 +142,9 @@ class ListFragment : Fragment(), HiveTrackerAdapter.OnHiveClickListener {
     fun setUpdateSearchButtonListener(layout: FragmentListBinding) {
         layout.btnUpdateSearch.setOnClickListener {
             val type = spinner.selectedItem.toString()
+            val position = spinner2.selectedItemPosition
             val returnedHiveTypes:List<HiveModel> = app.hives.findByType(type)
+            val returnedHiveUserID:List<HiveModel> = app.hives.findByOwner(this. users[position-1].id)
             if (type != "All Hive Types") {
                 fragBinding.recyclerView.adapter = HiveTrackerAdapter(returnedHiveTypes, this)
             }else{
