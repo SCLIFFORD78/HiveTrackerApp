@@ -68,6 +68,19 @@
                     android:padding="8dp"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="14sp" />
+                <EditText
+                    android:id="@+id/type"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_margin="8dp"
+                    android:hint="@string/hint_hiveType"
+                    android:inputType="text"
+                    android:maxLength="25"
+                    android:maxLines="1"
+                    android:padding="8dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="14sp"
+                    android:enabled="false"/>
 
                 <Button
                     android:id="@+id/hiveLocation"

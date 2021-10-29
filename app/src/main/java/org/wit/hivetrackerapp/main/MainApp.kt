@@ -1,6 +1,10 @@
 package org.wit.hivetrackerapp.main
 
 import android.app.Application
+import android.widget.ArrayAdapter
+import android.widget.Spinner
+import org.wit.hivetrackerapp.R
+import org.wit.hivetrackerapp.databinding.FragmentAddBinding
 import org.wit.hivetrackerapp.models.*
 import org.wit.usertrackerapp.models.UserJSONStore
 import timber.log.Timber
@@ -11,6 +15,7 @@ class MainApp : Application() {
     lateinit var hives: HiveStore
     lateinit var users: UserStore
     lateinit var loggedInUser: UserModel
+
 
     override fun onCreate() {
         super.onCreate()

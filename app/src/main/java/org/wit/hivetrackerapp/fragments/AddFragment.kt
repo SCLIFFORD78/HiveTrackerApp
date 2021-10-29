@@ -21,6 +21,8 @@ import timber.log.Timber.i
 import org.wit.hivetrackerapp.helpers.showImagePicker
 import android.content.Intent
 import android.os.Parcelable
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -42,6 +44,8 @@ class AddFragment : Fragment() {
     private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
     var location = Location()
     lateinit var data: HiveModel
+    lateinit var spinner: Spinner
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,6 +67,16 @@ class AddFragment : Fragment() {
         _fragBinding = FragmentAddBinding.inflate(inflater, container, false)
         val root = fragBinding.root
         activity?.title = getString(R.string.action_add)
+        spinner = root.findViewById(R.id.hiveTypeSpinner)
+        ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.hiveType, android.R.layout.simple_spinner_item,
+        ).also { adapter ->
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            // Apply the adapter to the spinner
+            adapter.also { spinner.adapter = it }
+        }
 
         edit = false
         var bundle = arguments
@@ -105,6 +119,7 @@ class AddFragment : Fragment() {
         layout.btnAdd.setOnClickListener {
             hive.title = layout.hiveTitle.text.toString()
             hive.description = layout.description.text.toString()
+            hive.type = spinner.selectedItem.toString()
             if (hive.title.isEmpty()) {
                 Snackbar.make(it, R.string.enter_hive_title, Snackbar.LENGTH_LONG)
                     .show()
@@ -117,7 +132,6 @@ class AddFragment : Fragment() {
                 }
             }
             i("add Button Pressed: $hive")
-            //setResult(RESULT_OK)
             Navigation.findNavController(this.requireView()).navigate(R.id.listFragment)
         }
     }

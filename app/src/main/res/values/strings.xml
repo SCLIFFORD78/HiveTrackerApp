@@ -4,6 +4,7 @@
     <string name="button_deleteHive">Delete Hive</string>
     <string name="hint_hiveTitle">Hive Title</string>
     <string name="hint_hiveDescription">Description </string>
+    <string name="hint_hiveType">Type </string>
     <string name="menu_addHive">Add</string>
     <string name="menu_cancelHive">Cancel</string>
     <string name="enter_hive_title">Please Enter a title</string>
@@ -28,7 +29,7 @@
 
     <string name="action_about">About Us</string>
     <string name="aboutus_title">Hive Tracker App</string>
-    <string name="aboutus_message">Hi, I\'m Homer\n\nPlease vote for me.\n\n Please Please Please Please!!</string>
+    <string name="aboutus_message">Hi, Welcome\n\nOur app will help track hives.\n\n So we can help the Bee Population</string>
     <!-- TODO: Remove or change this placeholder text -->
     <!-- Strings related to login -->
     <string name="fragment_header_home">Welcome. Choose Login or Register</string>
@@ -50,5 +51,13 @@
     <string name="invalid_firstname">Not a valid first name</string>
     <string name="invalid_secondname">Not a valid second name</string>
     <string name="login_failed">"Login failed"</string>
+    <!-- Strings related to Spinner -->
+    <string-array name="hiveType">
+        <item>National</item>
+        <item>Super</item>
+        <item>Warree</item>
+        <item>Langstroth</item>
+        <item>Top Bar</item>
+    </string-array>
 
 </resources>

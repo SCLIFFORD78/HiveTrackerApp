@@ -74,6 +74,7 @@ class UpdateFragment : Fragment() {
             edit = true
             fragBinding.hiveTitle.setText(hive.title)
             fragBinding.description.setText(hive.description)
+            fragBinding.type.setText("Type: " + hive.type)
             fragBinding.btnAdd.setText(R.string.save_hive)
             fragBinding.chooseImage.setText(R.string.button_changeImage)
             Picasso.get()

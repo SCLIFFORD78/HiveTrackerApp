@@ -48,7 +48,7 @@ class Home : AppCompatActivity(), HiveTrackerAdapter.Communicator {
             R.id.listFragment,
             R.id.aboutusFragment,
             R.id.updateFragment,
-            R.id.loginOrRegisterFragment), drawerLayout)
+        ), drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
     }
 

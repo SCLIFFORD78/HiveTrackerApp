@@ -12,6 +12,7 @@ data class HiveModel(var id: Long = 0,
                      var image: Uri = Uri.EMPTY,
                      var lat : Double = 0.0,
                      var lng: Double = 0.0,
+                     var type: String = "",
                      var zoom: Float = 0f) : Parcelable
 
 @Parcelize
