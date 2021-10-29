@@ -1,4 +1,4 @@
-package org.wit.hivetrackerapp.ui.login
+package org.wit.hivetrackerapp.login
 
 import org.wit.hivetrackerapp.models.UserModel
 

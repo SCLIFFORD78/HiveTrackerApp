@@ -1,4 +1,4 @@
-package org.wit.hivetrackerapp.ui.login
+package org.wit.hivetrackerapp.login
 
 import android.os.Bundle
 import android.util.Patterns
@@ -11,12 +11,10 @@ import androidx.annotation.StringRes
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
 import org.wit.hivetrackerapp.R
-import org.wit.hivetrackerapp.databinding.FragmentLoginBinding
 import org.wit.hivetrackerapp.databinding.FragmentRegisterBinding
 import org.wit.hivetrackerapp.main.MainApp
 import org.wit.hivetrackerapp.models.UserModel
 import timber.log.Timber
-import org.wit.hivetrackerapp.ui.login.LoginFormState
 
 private var user= UserModel()
 

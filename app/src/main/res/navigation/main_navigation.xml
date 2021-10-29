@@ -39,17 +39,17 @@
         tools:layout="@layout/fragment_update" />
     <fragment
         android:id="@+id/loginFragment2"
-        android:name="org.wit.hivetrackerapp.ui.login.LoginFragment"
+        android:name="org.wit.hivetrackerapp.login.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" />
     <fragment
         android:id="@+id/loginOrRegisterFragment"
-        android:name="org.wit.hivetrackerapp.ui.login.LoginOrRegisterFragment"
+        android:name="org.wit.hivetrackerapp.login.LoginOrRegisterFragment"
         android:label="fragment_login_or_register"
         tools:layout="@layout/fragment_login_or_register" />
     <fragment
         android:id="@+id/registerFragment"
-        android:name="org.wit.hivetrackerapp.ui.login.RegisterFragment"
+        android:name="org.wit.hivetrackerapp.login.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" />
 </navigation>

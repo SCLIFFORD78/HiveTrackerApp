@@ -1,4 +1,4 @@
-package org.wit.hivetrackerapp.ui.login
+package org.wit.hivetrackerapp.login
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.Navigation
 import org.wit.hivetrackerapp.R
-import org.wit.hivetrackerapp.databinding.FragmentLoginBinding
 import org.wit.hivetrackerapp.databinding.FragmentLoginOrRegisterBinding
 import org.wit.hivetrackerapp.main.MainApp
 import org.wit.hivetrackerapp.models.UserModel

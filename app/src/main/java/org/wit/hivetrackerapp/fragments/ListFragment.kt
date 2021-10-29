@@ -72,12 +72,14 @@ class ListFragment : Fragment(), HiveTrackerAdapter.OnHiveClickListener {
 
     override fun onHiveClick(position: Int) {
 
-        val clickedItem = app.hives.findAll()[position]
+        val clickedItem = app.hives.find(app.hives.findAll()[position])
         Timber.i("Item Pressed: $clickedItem clicked")
         comm = requireActivity() as HiveTrackerAdapter.Communicator
 
         Navigation.findNavController(this.requireView()).navigate(R.id.updateFragment)
-        comm.passDataCom(clickedItem)
+        if (clickedItem != null) {
+            comm.passDataCom(clickedItem)
+        }
         //Navigation.findNavController(this.requireView()).navigate(R.id.updateFragment)
         //val launcherIntent = Intent(activity, AddFragment::class.java)
         //launcherIntent.putExtra("hive_edit", clickedItem)

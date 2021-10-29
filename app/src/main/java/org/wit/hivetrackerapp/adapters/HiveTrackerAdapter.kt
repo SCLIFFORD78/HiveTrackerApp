@@ -14,7 +14,7 @@ class HiveTrackerAdapter(private var hives: List<HiveModel>,
     RecyclerView.Adapter<HiveTrackerAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
-        val binding = CardHiveBinding
+        val binding = org.wit.hivetrackerapp.databinding.CardHiveBinding
             .inflate(LayoutInflater.from(parent.context), parent, false)
 
         return MainHolder(binding)
