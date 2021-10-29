@@ -34,6 +34,16 @@ class HiveJSONStore(private val context: Context) : HiveStore {
         return hives
     }
 
+    override fun findByType(type: String): List<HiveModel> {
+        val resp: MutableList<HiveModel> = mutableListOf()
+        for (hive in hives) if(hive.type == type) {
+           resp.add(0,hive)
+           }
+        return if (resp.isNotEmpty()){
+            resp
+        } else emptyList()
+    }
+
     override fun create(hive: HiveModel) {
         hive.id = generateRandomId()
         hives.add(hive)
@@ -42,7 +52,7 @@ class HiveJSONStore(private val context: Context) : HiveStore {
 
 
     override fun update(hive: HiveModel) {
-        var foundHive: HiveModel? = hives.find { p -> p.id == hive.id }
+        val foundHive: HiveModel? = hives.find { p -> p.id == hive.id }
         if (foundHive != null) {
             foundHive.title = hive.title
             foundHive.description = hive.description

@@ -16,6 +16,10 @@ class HiveMemStore : HiveStore {
         return hives
     }
 
+    override fun findByType(type: String): List<HiveModel> {
+        TODO("Not yet implemented")
+    }
+
     override fun create(hive: HiveModel) {
         hive.id = getId()
         hives.add(hive)

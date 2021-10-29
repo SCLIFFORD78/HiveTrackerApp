@@ -59,5 +59,13 @@
         <item>Langstroth</item>
         <item>Top Bar</item>
     </string-array>
+    <string-array name="hiveTypeSearch">
+        <item>All Hive Types</item>
+        <item>National</item>
+        <item>Super</item>
+        <item>Warree</item>
+        <item>Langstroth</item>
+        <item>Top Bar</item>
+    </string-array>
 
 </resources>
