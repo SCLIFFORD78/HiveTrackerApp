@@ -82,7 +82,7 @@ class LoginFragment : Fragment() {
                 showLoginFailed(R.string.invalid_password)
             } else {
 
-                var registeredUser = app.users.find(user)
+                var registeredUser = app.users.findByUsername(user.userName)
                 if (registeredUser != null) {
                     if (!registeredUser.userName.equals(user.userName)){
                         showLoginFailed(R.string.invalid_username)

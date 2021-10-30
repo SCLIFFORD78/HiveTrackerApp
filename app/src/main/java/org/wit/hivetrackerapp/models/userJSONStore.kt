@@ -44,7 +44,6 @@ class UserJSONStore(private val context: Context) : UserStore {
 
 
     override fun update(user: UserModel) {
-        // todo
         var founduser: UserModel? = users.find { p -> p.id == user.id }
         if (founduser != null) {
             founduser.email = user.email
@@ -52,14 +51,23 @@ class UserJSONStore(private val context: Context) : UserStore {
             founduser.image = user.image
             founduser.secondName = user.secondName
             founduser.userName = user.userName
+            founduser.password = user.password
             logAll()
             serialize()
         }
     }
 
-    override fun find(user: UserModel): UserModel? {
-        var founduser: UserModel? = users.find { p -> p.userName == user.userName }
-        return founduser
+    override fun delete(user: UserModel) {
+        users.remove(user)
+        serialize()
+    }
+
+    override fun findByUsername(userName: String): UserModel? {
+        return users.find { p -> p.userName == userName }
+    }
+
+    override fun findByEmail(email: String): UserModel? {
+        return users.find { p -> p.email == email }
     }
 
     private fun serialize() {

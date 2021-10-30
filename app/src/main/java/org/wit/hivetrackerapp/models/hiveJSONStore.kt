@@ -82,10 +82,7 @@ class HiveJSONStore(private val context: Context) : HiveStore {
     }
 
     override fun find(hive: HiveModel): HiveModel? {
-        var foundHive: HiveModel? = hives.find { p -> p.id == hive.id }
-        return if (foundHive != null) {
-            foundHive
-        }else null
+        return hives.find { p -> p.id == hive.id }
     }
 
     private fun serialize() {

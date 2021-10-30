@@ -20,7 +20,6 @@ private var user= UserModel()
 
 
 class RegisterFragment : Fragment() {
-    private val _loginForm = MutableLiveData<LoginFormState<Any?>>()
     lateinit var app: MainApp
     private var _fragBinding: FragmentRegisterBinding? = null
     private val fragBinding get() = _fragBinding!!
@@ -53,10 +52,14 @@ class RegisterFragment : Fragment() {
             user.password = layout.registerPassword.text.toString()
             if (!isUserNameValid(user.userName)) {
                 showLoginFailed(R.string.invalid_username)
-            } else if (!isPasswordValid(user.password)) {
+            }else if (app.users.findByUsername(user.userName) != null ) {
+                showLoginFailed(R.string.invalid_username_notUnique)
+            }else if (!isPasswordValid(user.password)) {
                 showLoginFailed(R.string.invalid_password)
             }else if (!isEmailValid(user.email)) {
                 showLoginFailed(R.string.invalid_email)
+            }else if (app.users.findByEmail(user.email)!= null){
+                showLoginFailed(R.string.invalid_email_notUnique)
             }else if (!isFirstNameValid(user.firstName)) {
                 showLoginFailed(R.string.invalid_firstname)
             }else if (!isSecondNameValid(user.secondName)) {
@@ -64,13 +67,13 @@ class RegisterFragment : Fragment() {
             }
             else {
                 app.users.create(user)
-                if (app.users.find(user) != null){
+                if (app.users.findByUsername(user.userName) != null){
                     app.loggedInUser = user
                     updateUiWithUser(user.userName)
                 }
             }
 
-            Timber.i("add Button Pressed: $user")
+            Timber.i("add Button Pressed: ${user.userName}")
             //setResult(RESULT_OK)
 
         }

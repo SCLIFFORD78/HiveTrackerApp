@@ -39,7 +39,7 @@
                 android:spinnerMode="dialog"
                 android:textAlignment="center"
                 android:textColor="@color/colorPrimary"
-                android:textSize="10sp"
+                android:textSize="12sp"
                 app:layout_constraintTop_toBottomOf="@+id/appBarLayout2"
                 tools:ignore="RtlCompat" />
 
@@ -54,7 +54,7 @@
                 android:background="@android:color/holo_orange_dark"
                 android:text="@string/button_update_search"
                 android:textColor="@color/colorPrimary"
-                android:textSize="10sp" />
+                android:textSize="12sp" />
 
             <Spinner
                 android:id="@+id/hiveOwnerSpinnerSearch"
@@ -68,9 +68,8 @@
                 android:entries="@array/hiveTypeSearch"
                 android:hint="@string/hint_hiveType"
                 android:spinnerMode="dialog"
-                android:textAlignment="center"
                 android:textColor="@color/colorPrimary"
-                android:textSize="10sp"
+                android:textSize="12sp"
                 app:layout_constraintTop_toBottomOf="@+id/appBarLayout2" />
         </GridLayout>
     </com.google.android.material.appbar.AppBarLayout>

@@ -52,4 +52,9 @@
         android:name="org.wit.hivetrackerapp.login.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" />
+    <fragment
+        android:id="@+id/accountDetailsFragment"
+        android:name="org.wit.hivetrackerapp.login.AccountDetailsFragment"
+        android:label="fragment_account_details"
+        tools:layout="@layout/fragment_account_details" />
 </navigation>
