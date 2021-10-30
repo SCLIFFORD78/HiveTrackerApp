@@ -61,10 +61,12 @@ class ListFragment : Fragment(), HiveTrackerAdapter.OnHiveClickListener {
         fragBinding.recyclerView.adapter = HiveTrackerAdapter(app.hives.findAll(),this)
 
         users = app.users.findAll()
+
         val names: MutableList<String> = arrayListOf()
         for (user in users){
             names.add(0,(user.firstName+" "+user.secondName))
         }
+        names.reverse()
         names.add(0,"All Users")
 
         spinner = root.findViewById(R.id.hiveTypeSpinnerSearch)
@@ -86,16 +88,6 @@ class ListFragment : Fragment(), HiveTrackerAdapter.OnHiveClickListener {
         spinner2.adapter = dataAdapter
 
 
-        ArrayAdapter.createFromResource(
-            requireContext(),
-            R.array.hiveTypeSearch, android.R.layout.simple_spinner_item,
-        ).also { adapter ->
-            // Specify the layout to use when the list of choices appears
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            // Apply the adapter to the spinner
-            adapter.also { spinner.adapter = it }
-        }
-        setUpdateSearchButtonListener(fragBinding)
         return root
     }
 
@@ -142,15 +134,48 @@ class ListFragment : Fragment(), HiveTrackerAdapter.OnHiveClickListener {
     fun setUpdateSearchButtonListener(layout: FragmentListBinding) {
         layout.btnUpdateSearch.setOnClickListener {
             val type = spinner.selectedItem.toString()
-            val position = spinner2.selectedItemPosition
+            var position = spinner2.selectedItemPosition
+            if (position < 0){position = 0}
             val returnedHiveTypes:List<HiveModel> = app.hives.findByType(type)
-            val returnedHiveUserID:List<HiveModel> = app.hives.findByOwner(this. users[position-1].id)
-            if (type != "All Hive Types") {
-                fragBinding.recyclerView.adapter = HiveTrackerAdapter(returnedHiveTypes, this)
+            var returnedHiveUserID:List<HiveModel>
+
+            if (type != "All Hive Types" ) {
+                if (position != 0){
+                    returnedHiveUserID = findByOwner(this. users[position-1].id,returnedHiveTypes)
+                    fragBinding.recyclerView.adapter = HiveTrackerAdapter(returnedHiveUserID, this)
+                }else{
+                    fragBinding.recyclerView.adapter = HiveTrackerAdapter(returnedHiveTypes, this)
+                }
             }else{
-                fragBinding.recyclerView.adapter = HiveTrackerAdapter(app.hives.findAll(),this)
+                if (position != 0){
+                    returnedHiveUserID = app.hives.findByOwner(this. users[position-1].id)
+                    fragBinding.recyclerView.adapter = HiveTrackerAdapter(returnedHiveUserID, this)
+                }else{
+                    fragBinding.recyclerView.adapter = HiveTrackerAdapter(app.hives.findAll(),this)
+                }
             }
+
         }
+    }
+
+    fun findByType(type: String, hives:List<HiveModel>): List<HiveModel> {
+        val resp: MutableList<HiveModel> = mutableListOf()
+        for (hive in hives) if(hive.type == type) {
+            resp.add(0,hive)
+        }
+        return if (resp.isNotEmpty()){
+            resp
+        } else emptyList()
+    }
+
+    fun findByOwner(userID: Long, hives:List<HiveModel>): List<HiveModel> {
+        val resp: MutableList<HiveModel> = mutableListOf()
+        for (hive in hives) if(hive.userID == userID) {
+            resp.add(0,hive)
+        }
+        return if (resp.isNotEmpty()){
+            resp
+        } else emptyList()
     }
 
 
