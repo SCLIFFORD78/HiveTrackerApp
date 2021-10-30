@@ -3,6 +3,7 @@ package org.wit.hivetrackerapp.models
 interface HiveStore {
     fun findAll(): List<HiveModel>
     fun findByType(type: String): List<HiveModel>
+    fun findByOwner(userID: Long): List<HiveModel>
     fun create(hive: HiveModel)
     fun update(hive: HiveModel)
     fun delete(hive: HiveModel)

@@ -26,44 +26,51 @@
 
             <Spinner
                 android:id="@+id/hiveTypeSpinnerSearch"
-                android:layout_width="100dp"
+                android:layout_width="137dp"
                 android:layout_height="53dp"
                 android:layout_row="0"
                 android:layout_column="0"
                 android:layout_margin="0dp"
+                android:layout_gravity="fill"
                 android:background="@android:color/holo_orange_dark"
-                android:textColor="@color/colorPrimary"
+                android:clickable="true"
                 android:entries="@array/hiveTypeSearch"
                 android:hint="@string/hint_hiveType"
                 android:spinnerMode="dialog"
                 android:textAlignment="center"
-                app:layout_constraintTop_toBottomOf="@+id/appBarLayout2" />
+                android:textColor="@color/colorPrimary"
+                android:textSize="10sp"
+                app:layout_constraintTop_toBottomOf="@+id/appBarLayout2"
+                tools:ignore="RtlCompat" />
 
             <Button
                 android:id="@+id/btnUpdateSearch"
-                android:layout_width="match_parent"
+                android:layout_width="137dp"
                 android:layout_height="53dp"
                 android:layout_row="0"
                 android:layout_column="1"
                 android:layout_margin="0dp"
+                android:layout_gravity="fill"
                 android:background="@android:color/holo_orange_dark"
-                android:text="@string/button_addImage"
+                android:text="@string/button_update_search"
                 android:textColor="@color/colorPrimary"
-                android:textSize="16sp" />
+                android:textSize="10sp" />
 
             <Spinner
                 android:id="@+id/hiveOwnerSpinnerSearch"
-                android:layout_width="100dp"
+                android:layout_width="137dp"
                 android:layout_height="53dp"
                 android:layout_row="0"
                 android:layout_column="3"
                 android:layout_margin="0dp"
+                android:layout_gravity="fill"
                 android:background="@android:color/holo_orange_dark"
-                android:textColor="@color/colorPrimary"
                 android:entries="@array/hiveTypeSearch"
                 android:hint="@string/hint_hiveType"
                 android:spinnerMode="dialog"
                 android:textAlignment="center"
+                android:textColor="@color/colorPrimary"
+                android:textSize="10sp"
                 app:layout_constraintTop_toBottomOf="@+id/appBarLayout2" />
         </GridLayout>
     </com.google.android.material.appbar.AppBarLayout>

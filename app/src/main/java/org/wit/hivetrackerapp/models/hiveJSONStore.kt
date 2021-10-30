@@ -44,6 +44,17 @@ class HiveJSONStore(private val context: Context) : HiveStore {
         } else emptyList()
     }
 
+    override fun findByOwner(userID: Long): List<HiveModel> {
+        val resp: MutableList<HiveModel> = mutableListOf()
+        for (hive in hives) if(hive.userID == userID) {
+            resp.add(0,hive)
+        }
+        return if (resp.isNotEmpty()){
+            resp
+        } else emptyList()
+    }
+
+
     override fun create(hive: HiveModel) {
         hive.id = generateRandomId()
         hives.add(hive)
