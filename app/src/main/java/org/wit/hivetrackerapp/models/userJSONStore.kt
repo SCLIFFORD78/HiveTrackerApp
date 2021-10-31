@@ -38,6 +38,7 @@ class UserJSONStore(private val context: Context) : UserStore {
 
     override fun create(user: UserModel) {
         user.id = generateRandomId()
+        user.dateJoined = Date ()
         users.add(user)
         serialize()
     }

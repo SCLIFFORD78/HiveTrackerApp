@@ -7,13 +7,13 @@
     <string name="hint_hiveType">Type </string>
     <string name="menu_addHive">Add</string>
     <string name="menu_cancelHive">Cancel</string>
-    <string name="enter_hive_title">Please Enter a title</string>
+    <string name="enter_hive_tag">Please Enter a tag</string>
     <string name="save_hive">Save Hive</string>
     <string name="button_addImage"> Add Image </string>
     <string name="button_changeImage"> Change Image </string>
     <string name="select_hive_image">Select hive image</string>
     <string name="button_location">Set Location</string>
-    <string name="title_activity_maps">MapsActivity</string>
+    <string name="tag_activity_maps">MapsActivity</string>
 
     <string name="button_update_search">Update List</string>
 
@@ -26,12 +26,12 @@
     <string name="group_communicate">Communicate</string>
     <string name="group_account">Account</string>
 
-    <string name="nav_header_title">Hive Tracker</string>
-    <string name="nav_header_subtitle">Hive Tracking Application</string>
+    <string name="nav_header_tag">Hive Tracker</string>
+    <string name="nav_header_subtag">Hive Tracking Application</string>
     <string name="nav_header_desc">Navigation header</string>
 
     <string name="action_about">About Us</string>
-    <string name="aboutus_title">Hive Tracker App</string>
+    <string name="aboutus_tag">Hive Tracker App</string>
     <string name="aboutus_message">Hi, Welcome\n\nOur app will help track hives.\n\n So we can help the Bee Population</string>
     <!-- TODO: Remove or change this placeholder text -->
     <!-- Strings related to login -->
@@ -84,12 +84,12 @@
     <string name="sync_header">Sync</string>
 
     <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
+    <string name="signature_tag">Your signature</string>
+    <string name="reply_tag">Default reply action</string>
 
     <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
+    <string name="sync_tag">Sync email periodically</string>
+    <string name="attachment_tag">Download incoming attachments</string>
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>

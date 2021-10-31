@@ -5,15 +5,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.FragmentTransaction
-import androidx.fragment.app.add
 import androidx.navigation.findNavController
 import androidx.navigation.ui.*
 import org.wit.hivetrackerapp.R
 import org.wit.hivetrackerapp.adapters.HiveTrackerAdapter
 import org.wit.hivetrackerapp.databinding.HomeBinding
-import org.wit.hivetrackerapp.fragments.AddFragment
-import org.wit.hivetrackerapp.fragments.ListFragment
 import org.wit.hivetrackerapp.fragments.UpdateFragment
 import org.wit.hivetrackerapp.models.HiveModel
 import timber.log.Timber
@@ -23,7 +19,6 @@ class Home : AppCompatActivity(), HiveTrackerAdapter.Communicator {
     private lateinit var homeBinding : HomeBinding
     private lateinit var appBarConfiguration: AppBarConfiguration
     val mFragmentManager = supportFragmentManager
-    val mFragmentTransaction = mFragmentManager.beginTransaction()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

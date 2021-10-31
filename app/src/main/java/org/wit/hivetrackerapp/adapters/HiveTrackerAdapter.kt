@@ -43,7 +43,7 @@ class HiveTrackerAdapter(private var hives: List<HiveModel>,
 
 
         fun bind(hive: HiveModel) {
-            binding.hiveTitle.text = hive.title
+            binding.hiveTitle.text = hive.tag.toString()
             binding.type.text = hive.type
             binding.hiveImage.setImageURI(hive.image)
         }

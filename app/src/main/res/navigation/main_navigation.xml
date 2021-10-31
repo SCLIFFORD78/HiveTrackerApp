@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/listFragment"
         android:name="org.wit.hivetrackerapp.fragments.ListFragment"
-        android:label="fragment_list"
+        android:label="List of Hives"
         tools:layout="@layout/fragment_list" >
         <action
             android:id="@+id/action_listFragment_to_addFragment"

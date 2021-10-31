@@ -47,7 +47,7 @@
                     android:layout_height="48dp"
                     android:layout_margin="8dp"
                     android:hint="@string/hint_hiveTitle"
-                    android:inputType="text"
+                    android:enabled="false"
                     android:maxLength="25"
                     android:maxLines="1"
                     android:padding="8dp"
@@ -71,13 +71,15 @@
 
                 <Spinner
                     android:id="@+id/hiveTypeSpinner"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="48dp"
                     android:layout_marginTop="24dp"
                     android:layout_marginBottom="24dp"
+                    android:layout_gravity="center"
                     android:entries="@array/hiveType"
                     android:hint="@string/hint_hiveType"
                     android:spinnerMode="dialog"
+                    android:textSize="16sp"
                     app:layout_constraintTop_toBottomOf="@+id/description" />
 
                 <Button
@@ -86,12 +88,12 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     android:background="@color/colorAccent"
-                    android:paddingBottom="8dp"
                     android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
                     android:stateListAnimator="@null"
                     android:text="@string/button_location"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="16sp"/>
+                    android:textColor="#212121"
+                    android:textSize="16sp" />
 
                 <Button
                     android:id="@+id/chooseImage"
@@ -102,7 +104,7 @@
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
                     android:text="@string/button_addImage"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="#4E342E"
                     android:textSize="16sp" />
 
                 <ImageView

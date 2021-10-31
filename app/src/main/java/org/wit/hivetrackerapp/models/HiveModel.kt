@@ -7,7 +7,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class HiveModel(var id: Long = 0,
                      var userID: Long = 0,
-                     var title: String = "",
+                     var tag: Long = 0,
                      var description: String = "",
                      var image: Uri = Uri.EMPTY,
                      var lat : Double = 0.0,

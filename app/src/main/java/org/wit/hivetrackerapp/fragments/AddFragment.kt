@@ -59,9 +59,7 @@ class AddFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        if (container != null) {
-            container.removeAllViews();
-        }
+        container?.removeAllViews()
         _fragBinding = FragmentAddBinding.inflate(inflater, container, false)
         val root = fragBinding.root
         activity?.title = getString(R.string.action_add)
@@ -75,22 +73,8 @@ class AddFragment : Fragment() {
             // Apply the adapter to the spinner
             adapter.also { spinner.adapter = it }
         }
-        edit = false
-        var bundle = arguments
-        //hive = data
+        fragBinding.hiveTitle.setText(app.hives.getTag().toString())
 
-        if (bundle != null) {
-            //hive = data
-            hive = bundle?.get("data") as HiveModel
-            edit = true
-            fragBinding.hiveTitle.setText(hive.title)
-            fragBinding.description.setText(hive.description)
-            fragBinding.btnAdd.setText(R.string.save_hive)
-            fragBinding.chooseImage.setText(R.string.button_changeImage)
-            Picasso.get()
-                .load(hive.image)
-                .into(fragBinding.hiveImage)
-        }
         setAddButtonListener(fragBinding)
         setChooseImageListener(fragBinding)
         registerImagePickerCallback(fragBinding)
@@ -124,22 +108,13 @@ class AddFragment : Fragment() {
 
     fun setAddButtonListener(layout: FragmentAddBinding) {
         layout.btnAdd.setOnClickListener {
-            hive.title = layout.hiveTitle.text.toString()
+            hive.tag = layout.hiveTitle.text.toString().toLong()
             hive.description = layout.description.text.toString()
             hive.type = spinner.selectedItem.toString()
-            if (hive.title.isEmpty()) {
-                Snackbar.make(it, R.string.enter_hive_title, Snackbar.LENGTH_LONG)
-                    .show()
-            } else {
-                if (edit) {
-                    app.hives.update(hive.copy())
-                } else {
-                    hive.userID = app.loggedInUser.id
-                    app.hives.create(hive.copy())
-                }
-            }
-            i("add Button Pressed: $hive")
+            hive.userID = app.loggedInUser.id
+            app.hives.create(hive.copy())
             Navigation.findNavController(this.requireView()).navigate(R.id.listFragment)
+            i("Add Hive Button Pressed: ${app.loggedInUser.userName}")
         }
     }
 

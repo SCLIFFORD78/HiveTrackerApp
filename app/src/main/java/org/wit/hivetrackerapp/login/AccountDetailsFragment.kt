@@ -48,7 +48,8 @@ class AccountDetailsFragment : Fragment() {
         fragBinding.updateSecondname.setText(user.secondName)
         fragBinding.updateEmail.setText(user.email)
         fragBinding.updatePassword.setText(user.password)
-        fragBinding.totalHives.setText(app.hives.findByOwner(user.id).size.toString())
+        fragBinding.totalHives.text = app.hives.findByOwner(user.id).size.toString()
+        fragBinding.dateJoined.text = app.users.findByEmail(user.email)!!.dateJoined.toString()
         setUpdateButtonListener(fragBinding)
         setDeleteButtonListener(fragBinding)
         return root;

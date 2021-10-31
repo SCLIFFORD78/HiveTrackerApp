@@ -11,6 +11,7 @@ import org.wit.hivetrackerapp.databinding.FragmentLoginOrRegisterBinding
 import org.wit.hivetrackerapp.main.MainApp
 import org.wit.hivetrackerapp.models.UserModel
 import timber.log.Timber
+import java.util.*
 
 class LoginOrRegisterFragment : Fragment() {
     lateinit var app: MainApp
@@ -31,7 +32,7 @@ class LoginOrRegisterFragment : Fragment() {
 
         _fragBinding = FragmentLoginOrRegisterBinding.inflate(inflater, container, false)
         val root = fragBinding.root
-        //activity?.title = getString(R.string.fragment_header_home)
+        //activity?.tag = getString(R.string.fragment_header_home)
         setLoginButtonListener(fragBinding)
         setRegisterButtonListener(fragBinding)
         return root

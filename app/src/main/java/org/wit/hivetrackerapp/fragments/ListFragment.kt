@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.ArrayAdapter
+import android.widget.SearchView
 import android.widget.Spinner
 import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.Fragment
@@ -21,6 +22,7 @@ import org.wit.hivetrackerapp.main.MainApp
 import org.wit.hivetrackerapp.models.HiveModel
 import org.wit.hivetrackerapp.models.UserModel
 import timber.log.Timber
+
 class ListFragment : Fragment(), HiveTrackerAdapter.OnHiveClickListener {
     lateinit var app: MainApp
     private var _fragBinding: FragmentListBinding? = null
@@ -93,6 +95,29 @@ class ListFragment : Fragment(), HiveTrackerAdapter.OnHiveClickListener {
         super.onDestroyView()
         _fragBinding = null
     }
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_search, menu)
+        val search = menu.findItem(R.id.appSearchBar)
+        val searchView = search.actionView as SearchView
+        searchView.queryHint = "Search"
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                var list: MutableList<HiveModel> = mutableListOf()
+                var hiveByTag = query?.let { app.hives.findByTag(it.toLong()) }
+                if (hiveByTag != null) {
+                    list.add(0,hiveByTag)
+                }
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                var test = newText
+                return false
+            }
+
+        })
+        super.onCreateOptionsMenu(menu, inflater)
+    }
 
 
 
@@ -155,7 +180,7 @@ class ListFragment : Fragment(), HiveTrackerAdapter.OnHiveClickListener {
         } else emptyList()
     }
 
-    fun findByOwner(userID: Long, hives:List<HiveModel>): List<HiveModel> {
+    private fun findByOwner(userID: Long, hives:List<HiveModel>): List<HiveModel> {
         val resp: MutableList<HiveModel> = mutableListOf()
         for (hive in hives) if(hive.userID == userID) {
             resp.add(0,hive)

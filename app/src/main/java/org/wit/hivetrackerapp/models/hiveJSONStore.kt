@@ -54,6 +54,10 @@ class HiveJSONStore(private val context: Context) : HiveStore {
         } else emptyList()
     }
 
+    override fun findByTag(tag: Long): HiveModel? {
+        return hives.find { p -> p.tag == tag }
+    }
+
 
     override fun create(hive: HiveModel) {
         hive.id = generateRandomId()
@@ -65,7 +69,7 @@ class HiveJSONStore(private val context: Context) : HiveStore {
     override fun update(hive: HiveModel) {
         val foundHive: HiveModel? = hives.find { p -> p.id == hive.id }
         if (foundHive != null) {
-            foundHive.title = hive.title
+            foundHive.tag = hive.tag
             foundHive.description = hive.description
             foundHive.image = hive.image
             foundHive.lat = hive.lat
@@ -85,10 +89,19 @@ class HiveJSONStore(private val context: Context) : HiveStore {
         return hives.find { p -> p.id == hive.id }
     }
 
+    override fun getTag(): Long {
+        var num:Long = 1
+        while (hives.find { p -> p.tag == num } != null){
+            num++
+        }
+        return num
+    }
+
     private fun serialize() {
         val jsonString = gsonBuilder.toJson(hives, listType)
         write(context, JSON_FILE, jsonString)
     }
+
 
     private fun deserialize() {
         val jsonString = read(context, JSON_FILE)

@@ -62,7 +62,7 @@ class UpdateFragment : Fragment() {
             //hive = data
             hive = bundle?.get("data") as HiveModel
             edit = true
-            fragBinding.hiveTitle.setText(hive.title)
+            fragBinding.hiveTitle.setText(hive.tag.toString())
             fragBinding.description.setText(hive.description)
             fragBinding.type.setText("Type: " + hive.type)
             fragBinding.btnAdd.setText(R.string.save_hive)
@@ -96,19 +96,10 @@ class UpdateFragment : Fragment() {
 
     fun setAddButtonListener(layout: FragmentUpdateBinding) {
         layout.btnAdd.setOnClickListener {
-            hive.title = layout.hiveTitle.text.toString()
+            hive.tag = layout.hiveTitle.text.toString().toLong()
             hive.description = layout.description.text.toString()
-            if (hive.title.isEmpty()) {
-                Snackbar.make(it, R.string.enter_hive_title, Snackbar.LENGTH_LONG)
-                    .show()
-            } else {
-                if (edit) {
-                    app.hives.update(hive.copy())
-                } else {
-                    app.hives.create(hive.copy())
-                }
-            }
-            Timber.i("add Button Pressed: $hive")
+            app.hives.update(hive.copy())
+            Timber.i("add Button Pressed: ${app.loggedInUser.userName}")
             //setResult(RESULT_OK)
             Navigation.findNavController(this.requireView()).navigate(R.id.listFragment)
         }
