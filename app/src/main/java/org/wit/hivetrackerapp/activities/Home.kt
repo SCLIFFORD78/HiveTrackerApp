@@ -40,14 +40,11 @@ class Home : AppCompatActivity(), HiveTrackerAdapter.Communicator {
         val navView = homeBinding.navView
         navView.setupWithNavController(navController)
 
-
-
-
         appBarConfiguration = AppBarConfiguration(setOf(
             R.id.addFragment,
             R.id.listFragment,
             R.id.aboutusFragment,
-            R.id.updateFragment,
+            //R.id.updateFragment,
             R.id.accountDetailsFragment,
         ), drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)

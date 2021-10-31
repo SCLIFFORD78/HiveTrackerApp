@@ -21,18 +21,10 @@ import org.wit.hivetrackerapp.main.MainApp
 import org.wit.hivetrackerapp.models.HiveModel
 import org.wit.hivetrackerapp.models.UserModel
 import timber.log.Timber
-
-
-
-
-
-
-
 class ListFragment : Fragment(), HiveTrackerAdapter.OnHiveClickListener {
     lateinit var app: MainApp
     private var _fragBinding: FragmentListBinding? = null
     private val fragBinding get() = _fragBinding!!
-    private lateinit var refreshIntentLauncher : ActivityResultLauncher<Intent>
     private lateinit var comm: HiveTrackerAdapter.Communicator
     lateinit var spinner: Spinner
     lateinit var spinner2: Spinner
@@ -44,8 +36,6 @@ class ListFragment : Fragment(), HiveTrackerAdapter.OnHiveClickListener {
         super.onCreate(savedInstanceState)
         app = activity?.application as MainApp
         setHasOptionsMenu(true)
-
-
     }
 
     override fun onCreateView(
@@ -87,7 +77,7 @@ class ListFragment : Fragment(), HiveTrackerAdapter.OnHiveClickListener {
         // attaching data adapter to spinner
         spinner2.adapter = dataAdapter
 
-
+        setUpdateSearchButtonListener(fragBinding)
         return root
     }
 
@@ -104,10 +94,7 @@ class ListFragment : Fragment(), HiveTrackerAdapter.OnHiveClickListener {
         _fragBinding = null
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_hive, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return NavigationUI.onNavDestinationSelected(

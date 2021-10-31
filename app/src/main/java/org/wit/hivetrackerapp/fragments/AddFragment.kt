@@ -5,9 +5,6 @@ import android.app.appsearch.AppSearchResult.RESULT_OK
 import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
@@ -21,6 +18,7 @@ import timber.log.Timber.i
 import org.wit.hivetrackerapp.helpers.showImagePicker
 import android.content.Intent
 import android.os.Parcelable
+import android.view.*
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.activity.result.ActivityResultLauncher
@@ -77,7 +75,6 @@ class AddFragment : Fragment() {
             // Apply the adapter to the spinner
             adapter.also { spinner.adapter = it }
         }
-
         edit = false
         var bundle = arguments
         //hive = data
@@ -113,6 +110,16 @@ class AddFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _fragBinding = null
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_hive, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        Navigation.findNavController(this.requireView()).navigate(R.id.listFragment)
+        return super.onOptionsItemSelected(item)
     }
 
     fun setAddButtonListener(layout: FragmentAddBinding) {
