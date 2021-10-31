@@ -23,7 +23,7 @@ fun generateRandomId(): Long {
 
 class UserJSONStore(private val context: Context) : UserStore {
 
-    var users = mutableListOf<UserModel>()
+    private var users = mutableListOf<UserModel>()
 
     init {
         if (exists(context, JSON_FILE_USER)) {
@@ -45,7 +45,7 @@ class UserJSONStore(private val context: Context) : UserStore {
 
 
     override fun update(user: UserModel) {
-        var founduser: UserModel? = users.find { p -> p.id == user.id }
+        val founduser: UserModel? = users.find { p -> p.id == user.id }
         if (founduser != null) {
             founduser.email = user.email
             founduser.firstName = user.firstName

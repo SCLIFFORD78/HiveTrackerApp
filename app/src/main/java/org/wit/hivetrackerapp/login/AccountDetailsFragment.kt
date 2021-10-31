@@ -1,6 +1,5 @@
 package org.wit.hivetrackerapp.login
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
 import androidx.fragment.app.Fragment
@@ -8,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.StringRes
 import androidx.navigation.Navigation
 import org.wit.hivetrackerapp.R
@@ -22,7 +20,6 @@ class AccountDetailsFragment : Fragment() {
     lateinit var app: MainApp
     private var _fragBinding: FragmentAccountDetailsBinding? = null
     private val fragBinding get() = _fragBinding!!
-    private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,9 +32,7 @@ class AccountDetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        if (container != null) {
-            container.removeAllViews();
-        }
+        container?.removeAllViews()
         user = app.loggedInUser
 
         _fragBinding = FragmentAccountDetailsBinding.inflate(inflater, container, false)
@@ -52,7 +47,7 @@ class AccountDetailsFragment : Fragment() {
         fragBinding.dateJoined.text = app.users.findByEmail(user.email)!!.dateJoined.toString()
         setUpdateButtonListener(fragBinding)
         setDeleteButtonListener(fragBinding)
-        return root;
+        return root
     }
 
 
@@ -63,7 +58,7 @@ class AccountDetailsFragment : Fragment() {
 
     private fun setUpdateButtonListener(layout: FragmentAccountDetailsBinding) {
         layout.buttonUpdate.setOnClickListener {
-            var updateUser = UserModel()
+            val updateUser = UserModel()
             updateUser.userName = layout.updateUsername.text.toString()
             updateUser.firstName = layout.updateFirstname.text.toString()
             updateUser.secondName = layout.updateSecondname.text.toString()
@@ -123,7 +118,7 @@ class AccountDetailsFragment : Fragment() {
 
     // A placeholder email validation check
     private fun isEmailValid(email: String): Boolean {
-        return if (email.contains("@")) {
+        return if (!email.contains("@")) {
             Patterns.EMAIL_ADDRESS.matcher(email).matches()
         }else {
             email.isNotBlank()

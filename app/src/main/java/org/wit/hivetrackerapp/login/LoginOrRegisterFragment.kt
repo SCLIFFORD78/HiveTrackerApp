@@ -11,7 +11,6 @@ import org.wit.hivetrackerapp.databinding.FragmentLoginOrRegisterBinding
 import org.wit.hivetrackerapp.main.MainApp
 import org.wit.hivetrackerapp.models.UserModel
 import timber.log.Timber
-import java.util.*
 
 class LoginOrRegisterFragment : Fragment() {
     lateinit var app: MainApp
@@ -32,13 +31,12 @@ class LoginOrRegisterFragment : Fragment() {
 
         _fragBinding = FragmentLoginOrRegisterBinding.inflate(inflater, container, false)
         val root = fragBinding.root
-        //activity?.tag = getString(R.string.fragment_header_home)
         setLoginButtonListener(fragBinding)
         setRegisterButtonListener(fragBinding)
         return root
     }
 
-    fun setLoginButtonListener(layout: FragmentLoginOrRegisterBinding) {
+    private fun setLoginButtonListener(layout: FragmentLoginOrRegisterBinding) {
         layout.loginOption .setOnClickListener {
             app.loggedInUser = UserModel()
             Navigation.findNavController(this.requireView()).navigate(R.id.loginFragment2)
@@ -46,7 +44,7 @@ class LoginOrRegisterFragment : Fragment() {
         }
     }
 
-    fun setRegisterButtonListener(layout: FragmentLoginOrRegisterBinding) {
+    private fun setRegisterButtonListener(layout: FragmentLoginOrRegisterBinding) {
         layout.registerOption .setOnClickListener {
             app.loggedInUser = UserModel()
             Navigation.findNavController(this.requireView()).navigate(R.id.registerFragment)

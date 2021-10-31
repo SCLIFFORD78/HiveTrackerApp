@@ -14,7 +14,7 @@ class HiveTrackerAdapter(private var hives: List<HiveModel>,
     RecyclerView.Adapter<HiveTrackerAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
-        val binding = org.wit.hivetrackerapp.databinding.CardHiveBinding
+        val binding = CardHiveBinding
             .inflate(LayoutInflater.from(parent.context), parent, false)
 
         return MainHolder(binding)
@@ -43,9 +43,10 @@ class HiveTrackerAdapter(private var hives: List<HiveModel>,
 
 
         fun bind(hive: HiveModel) {
-            binding.hiveTitle.text = hive.tag.toString()
+            ("Tag Number :"+hive.tag.toString()).also { binding.hiveTitle.text = it }
             binding.type.text = hive.type
             binding.hiveImage.setImageURI(hive.image)
+            hive.description.also { binding.description.text = it }
         }
 
     }

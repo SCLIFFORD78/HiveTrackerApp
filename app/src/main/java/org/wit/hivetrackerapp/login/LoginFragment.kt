@@ -71,9 +71,8 @@ class LoginFragment : Fragment() {
         return password.length > 5
     }
 
-    fun setLoginButtonListener(layout: FragmentLoginBinding) {
+    private fun setLoginButtonListener(layout: FragmentLoginBinding) {
         layout.login.setOnClickListener {
-            var test = user
             user.userName = layout.username.text.toString()
             user.password = layout.password.text.toString()
             if (!isUserNameValid(user.userName)) {
@@ -82,18 +81,21 @@ class LoginFragment : Fragment() {
                 showLoginFailed(R.string.invalid_password)
             } else {
 
-                var registeredUser = app.users.findByUsername(user.userName)
+                val registeredUser = app.users.findByUsername(user.userName)
                 if (registeredUser != null) {
-                    if (!registeredUser.userName.equals(user.userName)){
-                        showLoginFailed(R.string.invalid_username)
+                    when {
+                        registeredUser.userName != user.userName -> {
+                            showLoginFailed(R.string.invalid_username)
 
-                    }else if(!registeredUser.password.equals(user.password)){
-                        showLoginFailed(R.string.invalid_password_login)
-                    }
-                    else{
-                        updateUiWithUser(user.userName)
-                        app.loggedInUser = registeredUser
-                        Navigation.findNavController(this.requireView()).navigate(R.id.listFragment)
+                        }
+                        registeredUser.password != user.password -> {
+                            showLoginFailed(R.string.invalid_password_login)
+                        }
+                        else -> {
+                            updateUiWithUser(user.userName)
+                            app.loggedInUser = registeredUser
+                            Navigation.findNavController(this.requireView()).navigate(R.id.listFragment)
+                        }
                     }
                 }else{
                     showLoginFailed(R.string.invalid_username)

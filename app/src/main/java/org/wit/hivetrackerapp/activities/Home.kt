@@ -18,7 +18,7 @@ class Home : AppCompatActivity(), HiveTrackerAdapter.Communicator {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var homeBinding : HomeBinding
     private lateinit var appBarConfiguration: AppBarConfiguration
-    val mFragmentManager = supportFragmentManager
+    private val mFragmentManager = supportFragmentManager
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

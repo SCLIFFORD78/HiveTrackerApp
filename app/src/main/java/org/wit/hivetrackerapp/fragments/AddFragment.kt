@@ -1,15 +1,9 @@
 package org.wit.hivetrackerapp.fragments
 
 import android.app.Activity.RESULT_CANCELED
-import android.app.appsearch.AppSearchResult.RESULT_OK
-import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.widget.Toast
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.NavigationUI
-import com.google.android.material.snackbar.Snackbar
 import org.wit.hivetrackerapp.R
 import org.wit.hivetrackerapp.databinding.FragmentAddBinding
 import org.wit.hivetrackerapp.main.MainApp
@@ -17,7 +11,6 @@ import org.wit.hivetrackerapp.models.HiveModel
 import timber.log.Timber.i
 import org.wit.hivetrackerapp.helpers.showImagePicker
 import android.content.Intent
-import android.os.Parcelable
 import android.view.*
 import android.widget.ArrayAdapter
 import android.widget.Spinner
@@ -25,10 +18,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.squareup.picasso.Picasso
-import kotlinx.parcelize.Parcelize
 import org.wit.hivetrackerapp.activities.MapsActivity
-import org.wit.hivetrackerapp.databinding.ActivityMapsBinding
-import org.wit.hivetrackerapp.databinding.HomeBinding
 import org.wit.hivetrackerapp.models.Location
 
 var hive = HiveModel()
@@ -37,12 +27,11 @@ class AddFragment : Fragment() {
     lateinit var app: MainApp
     private var _fragBinding: FragmentAddBinding? = null
     private val fragBinding get() = _fragBinding!!
-    var edit = false
     private lateinit var imageIntentLauncher: ActivityResultLauncher<Intent>
     private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
-    var location = Location()
-    lateinit var data: HiveModel
-    lateinit var spinner: Spinner
+    private var location = Location()
+    private lateinit var data: HiveModel
+    private lateinit var spinner: Spinner
 
 
 
@@ -60,6 +49,7 @@ class AddFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         container?.removeAllViews()
+        hive=HiveModel()
         _fragBinding = FragmentAddBinding.inflate(inflater, container, false)
         val root = fragBinding.root
         activity?.title = getString(R.string.action_add)
@@ -79,8 +69,8 @@ class AddFragment : Fragment() {
         setChooseImageListener(fragBinding)
         registerImagePickerCallback(fragBinding)
         setChooseMapListener(fragBinding)
-        registerMapCallback(fragBinding)
-        return root;
+        registerMapCallback()
+        return root
     }
 
     companion object {
@@ -106,7 +96,7 @@ class AddFragment : Fragment() {
         return super.onOptionsItemSelected(item)
     }
 
-    fun setAddButtonListener(layout: FragmentAddBinding) {
+    private fun setAddButtonListener(layout: FragmentAddBinding) {
         layout.btnAdd.setOnClickListener {
             hive.tag = layout.hiveTitle.text.toString().toLong()
             hive.description = layout.description.text.toString()
@@ -118,16 +108,16 @@ class AddFragment : Fragment() {
         }
     }
 
-    fun setChooseImageListener(layout: FragmentAddBinding){
+    private fun setChooseImageListener(layout: FragmentAddBinding){
         layout.chooseImage.setOnClickListener{
             showImagePicker(imageIntentLauncher)
         }
     }
 
-    fun setChooseMapListener(layout: FragmentAddBinding){
+    private fun setChooseMapListener(layout: FragmentAddBinding){
         layout.hiveLocation.setOnClickListener{
             i ("Set Location Pressed")
-            var location = Location(52.0634310, -9.6853542, 15f)
+            val location = Location(52.0634310, -9.6853542, 15f)
             if (hive.zoom != 0f) {
                 location.lat =  hive.lat
                 location.lng = hive.lng
@@ -151,6 +141,7 @@ class AddFragment : Fragment() {
                             Picasso.get()
                                 .load(hive.image)
                                 .into(layout.hiveImage)
+                            result.data!!.data = null
                         } // end of if
                     }
                     0 -> {
@@ -160,9 +151,10 @@ class AddFragment : Fragment() {
                     }
                 }
             }
+
     }
 
-    private fun registerMapCallback(layout: FragmentAddBinding) {
+    private fun registerMapCallback() {
         mapIntentLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult())
             { result ->

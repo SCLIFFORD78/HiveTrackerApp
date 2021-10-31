@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.StringRes
-import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
 import org.wit.hivetrackerapp.R
 import org.wit.hivetrackerapp.databinding.FragmentRegisterBinding
@@ -43,7 +42,7 @@ class RegisterFragment : Fragment() {
         return root
     }
 
-    fun setRegisterButtonListener(layout: FragmentRegisterBinding) {
+    private fun setRegisterButtonListener(layout: FragmentRegisterBinding) {
         layout.btnRegister.setOnClickListener {
             user.userName = layout.registerUsername.text.toString()
             user.firstName = layout.registerFirstname.text.toString()
@@ -86,7 +85,7 @@ class RegisterFragment : Fragment() {
 
     // A placeholder username validation check
     private fun isEmailValid(email: String): Boolean {
-        return if (email.contains("@")) {
+        return if (!email.contains("@")) {
             Patterns.EMAIL_ADDRESS.matcher(email).matches()
         } else {
         email.isNotBlank()

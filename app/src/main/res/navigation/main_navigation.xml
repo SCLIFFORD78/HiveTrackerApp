@@ -19,7 +19,7 @@
     <fragment
         android:id="@+id/addFragment"
         android:name="org.wit.hivetrackerapp.fragments.AddFragment"
-        android:label="fragment_add"
+        android:label="Add Hive to Database"
         tools:layout="@layout/fragment_add" >
         <action
             android:id="@+id/action_addFragment_to_listFragment"
@@ -30,7 +30,7 @@
     <fragment
         android:id="@+id/aboutusFragment"
         android:name="org.wit.hivetrackerapp.fragments.AboutusFragment"
-        android:label="fragment_aboutus"
+        android:label="About App"
         tools:layout="@layout/fragment_aboutus" />
     <fragment
         android:id="@+id/updateFragment"
@@ -40,21 +40,21 @@
     <fragment
         android:id="@+id/loginFragment2"
         android:name="org.wit.hivetrackerapp.login.LoginFragment"
-        android:label="fragment_login"
+        android:label="Login"
         tools:layout="@layout/fragment_login" />
     <fragment
         android:id="@+id/loginOrRegisterFragment"
         android:name="org.wit.hivetrackerapp.login.LoginOrRegisterFragment"
-        android:label="fragment_login_or_register"
+        android:label="Choose Login or Register"
         tools:layout="@layout/fragment_login_or_register" />
     <fragment
         android:id="@+id/registerFragment"
         android:name="org.wit.hivetrackerapp.login.RegisterFragment"
-        android:label="fragment_register"
+        android:label="Register"
         tools:layout="@layout/fragment_register" />
     <fragment
         android:id="@+id/accountDetailsFragment"
         android:name="org.wit.hivetrackerapp.login.AccountDetailsFragment"
-        android:label="fragment_account_details"
+        android:label="Account Details"
         tools:layout="@layout/fragment_account_details" />
 </navigation>

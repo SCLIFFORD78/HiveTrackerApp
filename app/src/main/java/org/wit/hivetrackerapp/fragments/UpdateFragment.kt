@@ -10,14 +10,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.Navigation
-import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import org.wit.hivetrackerapp.R
 import org.wit.hivetrackerapp.activities.MapsActivity
-import org.wit.hivetrackerapp.databinding.FragmentAddBinding
 import org.wit.hivetrackerapp.databinding.FragmentUpdateBinding
 import org.wit.hivetrackerapp.helpers.showImagePicker
 import org.wit.hivetrackerapp.main.MainApp
@@ -29,10 +26,10 @@ class UpdateFragment : Fragment() {
     lateinit var app: MainApp
     private var _fragBinding: FragmentUpdateBinding? = null
     private val fragBinding get() = _fragBinding!!
-    var edit = false
+    private var edit = false
     private lateinit var imageIntentLauncher: ActivityResultLauncher<Intent>
     private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
-    var location = Location()
+    private var location = Location()
     lateinit var data: HiveModel
 
 
@@ -47,9 +44,7 @@ class UpdateFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        if (container != null) {
-            container.removeAllViews();
-        }
+        container?.removeAllViews()
         _fragBinding = FragmentUpdateBinding.inflate(inflater, container, false)
         val root = fragBinding.root
         activity?.title = getString(R.string.action_add)
@@ -60,11 +55,11 @@ class UpdateFragment : Fragment() {
 
         if (bundle != null) {
             //hive = data
-            hive = bundle?.get("data") as HiveModel
+            hive = bundle.get("data") as HiveModel
             edit = true
-            fragBinding.hiveTitle.setText(hive.tag.toString())
+            fragBinding.hiveTitle.setText("Tag Number :" + hive.tag)
             fragBinding.description.setText(hive.description)
-            fragBinding.type.setText("Type: " + hive.type)
+            fragBinding.type.setText("Type: ${hive.type}")
             fragBinding.btnAdd.setText(R.string.save_hive)
             fragBinding.chooseImage.setText(R.string.button_changeImage)
             Picasso.get()
@@ -76,8 +71,8 @@ class UpdateFragment : Fragment() {
         setChooseImageListener(fragBinding)
         registerImagePickerCallback(fragBinding)
         setChooseMapListener(fragBinding)
-        registerMapCallback(fragBinding)
-        return root;
+        registerMapCallback()
+        return root
     }
 
     companion object {
@@ -94,9 +89,8 @@ class UpdateFragment : Fragment() {
         _fragBinding = null
     }
 
-    fun setAddButtonListener(layout: FragmentUpdateBinding) {
+    private fun setAddButtonListener(layout: FragmentUpdateBinding) {
         layout.btnAdd.setOnClickListener {
-            hive.tag = layout.hiveTitle.text.toString().toLong()
             hive.description = layout.description.text.toString()
             app.hives.update(hive.copy())
             Timber.i("add Button Pressed: ${app.loggedInUser.userName}")
@@ -105,7 +99,7 @@ class UpdateFragment : Fragment() {
         }
     }
 
-    fun setDeleteButtonListener(layout: FragmentUpdateBinding) {
+    private fun setDeleteButtonListener(layout: FragmentUpdateBinding) {
         layout.btnDelete.setOnClickListener {
             app.hives.delete(hive)
             Timber.i("Delete Button Pressed: ${hive.id} Deleted")
@@ -114,16 +108,16 @@ class UpdateFragment : Fragment() {
         }
     }
 
-    fun setChooseImageListener(layout: FragmentUpdateBinding){
+    private fun setChooseImageListener(layout: FragmentUpdateBinding){
         layout.chooseImage.setOnClickListener{
             showImagePicker(imageIntentLauncher)
         }
     }
 
-    fun setChooseMapListener(layout: FragmentUpdateBinding){
+    private fun setChooseMapListener(layout: FragmentUpdateBinding){
         layout.hiveLocation.setOnClickListener{
             Timber.i("Set Location Pressed")
-            var location = Location(52.0634310, -9.6853542, 15f)
+            val location = Location(52.0634310, -9.6853542, 15f)
             if (hive.zoom != 0f) {
                 location.lat =  hive.lat
                 location.lng = hive.lng
@@ -158,7 +152,7 @@ class UpdateFragment : Fragment() {
             }
     }
 
-    private fun registerMapCallback(layout: FragmentUpdateBinding) {
+    private fun registerMapCallback() {
         mapIntentLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult())
             { result ->

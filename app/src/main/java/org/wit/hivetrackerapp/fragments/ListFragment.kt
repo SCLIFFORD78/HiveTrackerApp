@@ -1,22 +1,17 @@
 package org.wit.hivetrackerapp.fragments
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.ArrayAdapter
 import android.widget.SearchView
 import android.widget.Spinner
-import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import org.wit.hivetrackerapp.R
 import org.wit.hivetrackerapp.adapters.HiveTrackerAdapter
-import org.wit.hivetrackerapp.databinding.FragmentAddBinding
 import org.wit.hivetrackerapp.databinding.FragmentListBinding
 import org.wit.hivetrackerapp.main.MainApp
 import org.wit.hivetrackerapp.models.HiveModel
@@ -28,9 +23,12 @@ class ListFragment : Fragment(), HiveTrackerAdapter.OnHiveClickListener {
     private var _fragBinding: FragmentListBinding? = null
     private val fragBinding get() = _fragBinding!!
     private lateinit var comm: HiveTrackerAdapter.Communicator
-    lateinit var spinner: Spinner
-    lateinit var spinner2: Spinner
+    private lateinit var spinner: Spinner
+    private lateinit var spinner2: Spinner
     private lateinit var users : List<UserModel>
+    fun searchUpdate(hive: List<HiveModel>){
+        fragBinding.recyclerView.adapter = HiveTrackerAdapter(hive,this)
+    }
 
 
 
@@ -49,8 +47,8 @@ class ListFragment : Fragment(), HiveTrackerAdapter.OnHiveClickListener {
         val root = fragBinding.root
         activity?.title = getString(R.string.action_list)
 
-        fragBinding.recyclerView.setLayoutManager(LinearLayoutManager(activity))
-        fragBinding.recyclerView.adapter = HiveTrackerAdapter(app.hives.findAll(),this)
+        fragBinding.recyclerView.layoutManager = LinearLayoutManager(activity)
+        fragBinding.recyclerView.adapter = HiveTrackerAdapter(app.hives.findAll().sortedBy { it.tag },this)
 
         users = app.users.findAll()
 
@@ -99,19 +97,19 @@ class ListFragment : Fragment(), HiveTrackerAdapter.OnHiveClickListener {
         inflater.inflate(R.menu.menu_search, menu)
         val search = menu.findItem(R.id.appSearchBar)
         val searchView = search.actionView as SearchView
-        searchView.queryHint = "Search"
+        searchView.queryHint = "Tag Number"
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                var list: MutableList<HiveModel> = mutableListOf()
-                var hiveByTag = query?.let { app.hives.findByTag(it.toLong()) }
+                val list: MutableList<HiveModel> = mutableListOf()
+                val hiveByTag = query?.let { app.hives.findByTag(it.toLong()) }
                 if (hiveByTag != null) {
                     list.add(0,hiveByTag)
+                    searchUpdate(list)
                 }
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                var test = newText
                 return false
             }
 
@@ -130,7 +128,7 @@ class ListFragment : Fragment(), HiveTrackerAdapter.OnHiveClickListener {
 
     override fun onHiveClick(position: Int) {
 
-        val clickedItem = app.hives.find(app.hives.findAll()[position])
+        val clickedItem = app.hives.find(app.hives.findAll().sortedBy { it.tag }[position])
         Timber.i("Item Pressed: $clickedItem clicked")
         comm = requireActivity() as HiveTrackerAdapter.Communicator
 
@@ -138,38 +136,34 @@ class ListFragment : Fragment(), HiveTrackerAdapter.OnHiveClickListener {
         if (clickedItem != null) {
             comm.passDataCom(clickedItem)
         }
-        //Navigation.findNavController(this.requireView()).navigate(R.id.updateFragment)
-        //val launcherIntent = Intent(activity, AddFragment::class.java)
-        //launcherIntent.putExtra("hive_edit", clickedItem)
     }
 
-    fun setUpdateSearchButtonListener(layout: FragmentListBinding) {
+    private fun setUpdateSearchButtonListener(layout: FragmentListBinding) {
         layout.btnUpdateSearch.setOnClickListener {
             val type = spinner.selectedItem.toString()
             var position = spinner2.selectedItemPosition
             if (position < 0){position = 0}
-            val returnedHiveTypes:List<HiveModel> = app.hives.findByType(type)
-            var returnedHiveUserID:List<HiveModel>
+            val returnedHiveTypes:List<HiveModel> = app.hives.findByType(type).sortedBy { it.tag }
+            val returnedHiveUserID:List<HiveModel>
 
             if (type != "All Hive Types" ) {
                 if (position != 0){
-                    returnedHiveUserID = findByOwner(this. users[position-1].id,returnedHiveTypes)
+                    returnedHiveUserID = findByOwner(this. users[position-1].id,returnedHiveTypes).sortedBy { it.tag }
                     fragBinding.recyclerView.adapter = HiveTrackerAdapter(returnedHiveUserID, this)
                 }else{
                     fragBinding.recyclerView.adapter = HiveTrackerAdapter(returnedHiveTypes, this)
                 }
             }else{
                 if (position != 0){
-                    returnedHiveUserID = app.hives.findByOwner(this. users[position-1].id)
+                    returnedHiveUserID = app.hives.findByOwner(this. users[position-1].id).sortedBy { it.tag }
                     fragBinding.recyclerView.adapter = HiveTrackerAdapter(returnedHiveUserID, this)
                 }else{
-                    fragBinding.recyclerView.adapter = HiveTrackerAdapter(app.hives.findAll(),this)
+                    fragBinding.recyclerView.adapter = HiveTrackerAdapter(app.hives.findAll().sortedBy { it.tag },this)
                 }
             }
 
         }
     }
-
     fun findByType(type: String, hives:List<HiveModel>): List<HiveModel> {
         val resp: MutableList<HiveModel> = mutableListOf()
         for (hive in hives) if(hive.type == type) {
@@ -179,6 +173,7 @@ class ListFragment : Fragment(), HiveTrackerAdapter.OnHiveClickListener {
             resp
         } else emptyList()
     }
+
 
     private fun findByOwner(userID: Long, hives:List<HiveModel>): List<HiveModel> {
         val resp: MutableList<HiveModel> = mutableListOf()

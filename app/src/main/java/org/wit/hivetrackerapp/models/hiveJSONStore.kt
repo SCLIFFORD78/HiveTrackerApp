@@ -21,7 +21,7 @@ fun generateRandomId(): Long {
 
 class HiveJSONStore(private val context: Context) : HiveStore {
 
-    var hives = mutableListOf<HiveModel>()
+    private var hives = mutableListOf<HiveModel>()
 
     init {
         if (exists(context, JSON_FILE)) {
