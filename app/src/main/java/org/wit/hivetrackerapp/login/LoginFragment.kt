@@ -11,6 +11,9 @@ import androidx.navigation.Navigation
 import org.wit.hivetrackerapp.databinding.FragmentLoginBinding
 
 import org.wit.hivetrackerapp.R
+import org.wit.hivetrackerapp.helpers.PasswordHelpers
+import org.wit.hivetrackerapp.helpers.PasswordHelpers.generateSalt
+import org.wit.hivetrackerapp.helpers.PasswordHelpers.isExpectedPassword
 import org.wit.hivetrackerapp.main.MainApp
 import org.wit.hivetrackerapp.models.UserModel
 import timber.log.Timber
@@ -73,8 +76,9 @@ class LoginFragment : Fragment() {
 
     private fun setLoginButtonListener(layout: FragmentLoginBinding) {
         layout.login.setOnClickListener {
-            user.userName = layout.username.text.toString()
-            user.password = layout.password.text.toString()
+            val salt = org.wit.hivetrackerapp.helpers.salt.salt
+            user.userName = layout.username.text.toString().trim()
+            user.password = layout.password.text.toString().trim()
             if (!isUserNameValid(user.userName)) {
                 showLoginFailed(R.string.invalid_username)
             } else if (!isPasswordValid(user.password)) {
@@ -88,7 +92,8 @@ class LoginFragment : Fragment() {
                             showLoginFailed(R.string.invalid_username)
 
                         }
-                        registeredUser.password != user.password -> {
+                        !isExpectedPassword(user.password,salt,registeredUser.password)
+                         -> {
                             showLoginFailed(R.string.invalid_password_login)
                         }
                         else -> {
