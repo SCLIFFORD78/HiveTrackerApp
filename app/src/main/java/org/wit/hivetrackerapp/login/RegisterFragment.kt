@@ -11,6 +11,8 @@ import androidx.annotation.StringRes
 import androidx.navigation.Navigation
 import org.wit.hivetrackerapp.R
 import org.wit.hivetrackerapp.databinding.FragmentRegisterBinding
+import org.wit.hivetrackerapp.helpers.PasswordHelpers.generateSalt
+import org.wit.hivetrackerapp.helpers.PasswordHelpers.hash
 import org.wit.hivetrackerapp.main.MainApp
 import org.wit.hivetrackerapp.models.UserModel
 import timber.log.Timber
@@ -44,11 +46,13 @@ class RegisterFragment : Fragment() {
 
     private fun setRegisterButtonListener(layout: FragmentRegisterBinding) {
         layout.btnRegister.setOnClickListener {
-            user.userName = layout.registerUsername.text.toString()
-            user.firstName = layout.registerFirstname.text.toString()
-            user.secondName = layout.registerSecondname.text.toString()
-            user.email = layout.registerEmail.text.toString()
-            user.password = layout.registerPassword.text.toString()
+            val salt = org.wit.hivetrackerapp.helpers.salt.salt
+            user.userName = layout.registerUsername.text.toString().trim()
+            user.firstName = layout.registerFirstname.text.toString().trim()
+            user.secondName = layout.registerSecondname.text.toString().trim()
+            user.email = layout.registerEmail.text.toString().trim()
+            val pass = hash(layout.registerPassword.text.toString().trim(),salt)
+            user.password = pass.contentToString()
             if (!isUserNameValid(user.userName)) {
                 showLoginFailed(R.string.invalid_username)
             }else if (app.users.findByUsername(user.userName) != null ) {
